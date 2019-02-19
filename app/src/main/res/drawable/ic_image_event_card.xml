@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+
+            <solid android:color="@color/colorGray"/>
+
+            <corners android:topLeftRadius="8dp"
+                     android:topRightRadius="8dp"
+                     android:bottomLeftRadius="0.1dp"
+                     android:bottomRightRadius="0.1dp"/>
+        </shape>
+    </item>
+    <item>
+        <bitmap
+                android:gravity="center"
+                android:src="@drawable/ic_photo_error_png"/>
+    </item>
+</layer-list>

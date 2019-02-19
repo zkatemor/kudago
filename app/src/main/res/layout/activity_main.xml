@@ -9,7 +9,6 @@
 
     <include
             android:id="@+id/toolbar"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
             layout="@layout/toolbar_activity_main"/>
 
     <TextView
