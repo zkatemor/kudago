@@ -1,128 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="344dp"
-        android:layout_height="367dp"
-        android:layout_gravity="center_horizontal"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/ic_event_card_layout"
         android:id="@+id/main_layout">
 
     <ImageView
-            android:layout_width="344dp"
             android:id="@+id/image_view_event"
             android:background="@drawable/ic_image_event_card"
-            android:layout_height="160dp" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="207dp" app:layout_constraintStart_toStartOf="parent"/>
+            android:layout_width="match_parent"
+            android:layout_height="160dp"/>
 
     <TextView
             android:id="@+id/text_view_title"
-            android:layout_width="312dp"
-            android:layout_height="38dp" android:layout_marginEnd="16dp"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="152dp" app:layout_constraintHorizontal_bias="0.0"
-            android:fontFamily="Roboto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textColor="@color/colorBlack"
-            android:textFontWeight="bold"
+            android:textStyle="bold"
+            android:textAllCaps="true"
             android:text="TITLE"
-            app:layout_constraintTop_toBottomOf="@+id/image_view_event" android:layout_marginTop="16dp"/>
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/image_view_event" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="16dp"/>
 
     <TextView
             android:id="@+id/text_view_description"
-            android:layout_width="312dp"
-            android:layout_height="33dp"
-            android:fontFamily="Roboto"
-            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
             android:textColor="@color/colorBlack"
             android:text="Description"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_title" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="16dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="16dp" android:layout_marginBottom="112dp"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
-    <ImageView
-            android:layout_width="14dp"
-            android:id="@+id/image_location"
-            android:background="@drawable/ic_location"
-            android:layout_height="18dp"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="21dp" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="309dp" android:layout_marginTop="11dp"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_description" android:layout_marginBottom="83dp"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_title"/>
 
-    <ImageView
-            android:layout_width="18dp"
-            android:id="@+id/image_date"
-            android:background="@drawable/ic_date"
-            android:layout_height="18dp"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="19dp" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="317dp"
-            android:layout_marginBottom="52dp"
-            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.0"
-            android:layout_marginTop="13dp" app:layout_constraintTop_toBottomOf="@+id/image_location"/>
+    <LinearLayout
+            android:id="@+id/location_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp">
 
-    <ImageView
-            android:layout_width="11.14dp"
-            android:id="@+id/image_cost"
-            android:background="@drawable/ic_cost"
-            android:layout_height="14dp"
-            android:layout_marginTop="17dp"
-            app:layout_constraintTop_toBottomOf="@+id/image_date" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="22dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="310.86dp"
-            android:layout_marginBottom="21dp" app:layout_constraintBottom_toBottomOf="parent"/>
+        <ImageView
+                android:layout_width="14dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/ic_location"/>
 
-    <TextView
-            android:id="@+id/text_view_location"
-            android:layout_width="280dp"
-            android:layout_height="17dp"
-            android:fontFamily="Roboto"
-            android:textSize="14sp"
-            android:textColor="@color/colorGrayText"
-            android:text="Location"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="16dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="48dp"
-            app:layout_constraintHorizontal_bias="0.0"
-            android:layout_marginTop="12dp" app:layout_constraintTop_toBottomOf="@+id/text_view_description"
-            android:layout_marginBottom="83dp" app:layout_constraintBottom_toBottomOf="parent"/>
+        <TextView
+                android:id="@+id/text_view_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="13dp"
+                android:layout_marginLeft="16dp"
+                tools:text="Location"
+                android:layout_gravity="center_vertical"
+                android:textSize="14sp"/>
 
-    <TextView
-            android:id="@+id/text_view_date"
-            android:layout_width="280dp"
-            android:layout_height="17dp"
-            android:fontFamily="Roboto"
-            android:textSize="14sp"
-            android:textColor="@color/colorGrayText"
-            android:text="Date"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="16dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="48dp"
-            app:layout_constraintHorizontal_bias="0.0" android:layout_marginTop="15dp"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_location"
-            app:layout_constraintVertical_chainStyle="spread_inside" android:layout_marginBottom="51dp"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+    </LinearLayout>
 
-    <TextView
-            android:id="@+id/text_view_cost"
-            android:layout_width="280dp"
-            android:layout_height="17dp"
-            android:fontFamily="Roboto"
-            android:textSize="14sp"
-            android:textColor="@color/colorGrayText"
-            android:text="Cost"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="16dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="48dp"
-            app:layout_constraintHorizontal_bias="0.0"
-            android:layout_marginTop="15dp" app:layout_constraintTop_toBottomOf="@+id/text_view_date"
-            android:layout_marginBottom="19dp" app:layout_constraintBottom_toBottomOf="parent"/>
+    <LinearLayout
+            android:id="@+id/date_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp">
 
-</android.support.constraint.ConstraintLayout>
+        <ImageView
+                android:layout_width="14dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/ic_date"/>
+
+        <TextView
+                android:id="@+id/text_view_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="13dp"
+                android:layout_marginLeft="16dp"
+                tools:text="Date"
+                android:layout_gravity="center_vertical"
+                android:textSize="14sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/cost_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp">
+
+        <ImageView
+                android:layout_width="14dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/ic_cost"/>
+
+        <TextView
+                android:id="@+id/text_view_cost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="13dp"
+                android:layout_marginLeft="16dp"
+                tools:text="Date"
+                android:layout_gravity="center_vertical"
+                android:textSize="14sp"/>
+
+    </LinearLayout>
+
+</LinearLayout>
