@@ -8,5 +8,6 @@
     <color name="colorBlack">#000000</color>
     <color name="colorRed">#E62D37</color>
     <color name="colorGray">#C2C1C1</color>
+    <color name="colorTransparent">#00FFFFFF</color>
     <color name="colorGrayText">#555151</color>
 </resources>

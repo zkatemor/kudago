@@ -8,20 +8,37 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:context=".activities.MainActivity">
 
-    <include
-            android:id="@+id/toolbar_main"
-            layout="@layout/toolbar_main"/>
+    <android.support.design.widget.AppBarLayout
+            android:background="@color/colorWhite"
+            android:id="@+id/layout_toolbar_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <include
+        <include
+                android:id="@+id/toolbar_main"
+                layout="@layout/toolbar_main"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/layout_coordinator"
+            android:background="@color/colorWhite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <include
             android:id="@+id/toolbar_kudago"
             layout="@layout/toolbar_main_kudago"/>
 
-    <android.support.v7.widget.RecyclerView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_event_card"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager" tools:itemCount="30"
-    />
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:itemCount="30"/>
+
+    </android.support.design.widget.CoordinatorLayout>
 
 </LinearLayout>

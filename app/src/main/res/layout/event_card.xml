@@ -7,16 +7,17 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginBottom="16dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/ic_event_card_layout"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:onClick="onClickEventCard"
+        android:background="@drawable/event_card_layout"
         android:id="@+id/main_layout">
 
     <ImageView
             android:id="@+id/image_view_event"
-            android:background="@drawable/ic_image_event_card"
+            android:background="@drawable/image_event_card"
             android:layout_width="match_parent"
             android:layout_height="160dp"/>
 
@@ -113,6 +114,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
             android:layout_marginEnd="16dp">
 
         <ImageView
@@ -127,7 +129,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="13dp"
                 android:layout_marginLeft="16dp"
-                tools:text="Date"
+                tools:text="Cost"
                 android:layout_gravity="center_vertical"
                 android:textSize="14sp"/>
 

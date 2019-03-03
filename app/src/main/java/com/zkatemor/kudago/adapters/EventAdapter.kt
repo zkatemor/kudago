@@ -22,11 +22,6 @@ class EventAdapter(private val items: ArrayList<EventCard>) : RecyclerView.Adapt
     override fun onBindViewHolder(p0: EventViewHolder, p1: Int) {
         val item = items[p1]
 
-        /*if (p1.equals(null)) {
-            p0.frameLayout.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f)
-        }*/
-
         p0.title.text = item.getTitle
         p0.description.text = item.getDescription
         p0.location.text = item.getLocation
@@ -42,7 +37,6 @@ class EventAdapter(private val items: ArrayList<EventCard>) : RecyclerView.Adapt
         var date: TextView
         var cost: TextView
         var image: ImageView
-     //   var frameLayout : FrameLayout
 
         init {
             super.itemView
@@ -52,7 +46,6 @@ class EventAdapter(private val items: ArrayList<EventCard>) : RecyclerView.Adapt
             date = itemView.findViewById(R.id.text_view_date) as TextView
             cost = itemView.findViewById(R.id.text_view_cost) as TextView
             image = itemView.findViewById(R.id.image_view_event) as ImageView
-           // frameLayout = itemView.findViewById(R.id.frame_layout) as FrameLayout
         }
     }
 }
