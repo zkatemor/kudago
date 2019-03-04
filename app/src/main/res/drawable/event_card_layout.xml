@@ -1,11 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape
-        xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid
-            android:color="@color/colorWhite">
-    </solid>
-    <stroke
-            android:width="0dp"
-            android:color="#424242">
-    </stroke>
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- Border -->
+    <item>
+        <shape>
+            <padding
+                    android:bottom="2dp"
+                    android:left="1dp"
+                    android:right="1dp"
+                    android:top="0dp" />
+
+            <solid android:color="#00CCCCCC" />
+
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <padding
+                    android:bottom="2dp"
+                    android:left="1dp"
+                    android:right="1dp"
+                    android:top="0dp" />
+
+            <solid android:color="#10CCCCCC" />
+
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <padding
+                    android:bottom="2dp"
+                    android:left="1dp"
+                    android:right="1dp"
+                    android:top="0dp" />
+
+            <solid android:color="#20CCCCCC" />
+
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <padding
+                    android:bottom="2dp"
+                    android:left="1dp"
+                    android:right="1dp"
+                    android:top="0dp" />
+
+            <solid android:color="#30CCCCCC" />
+
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <padding
+                    android:bottom="2dp"
+                    android:left="1dp"
+                    android:right="1dp"
+                    android:top="0dp" />
+
+            <solid android:color="#50CCCCCC" />
+
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+
+    <!-- Background -->
+    <item>
+        <shape>
+            <solid android:color="@color/colorWhite" />
+
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+
+</layer-list>

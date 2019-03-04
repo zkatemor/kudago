@@ -6,11 +6,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         android:onClick="onClickEventCard"
         android:background="@drawable/event_card_layout"
         android:id="@+id/main_layout">
@@ -25,7 +25,7 @@
             android:id="@+id/text_view_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textColor="@color/colorBlack"
             android:textStyle="bold"
             android:textAllCaps="true"
@@ -39,7 +39,7 @@
             android:id="@+id/text_view_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/colorBlack"
             android:text="Description"
             app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +54,7 @@
             android:orientation="horizontal"
             android:layout_marginTop="12dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             android:layout_marginRight="16dp"
             android:layout_marginEnd="16dp">
 
@@ -72,7 +72,7 @@
                 android:layout_marginLeft="16dp"
                 tools:text="Location"
                 android:layout_gravity="center_vertical"
-                android:textSize="14sp"/>
+                android:textSize="16sp"/>
 
     </LinearLayout>
 
@@ -83,7 +83,7 @@
             android:orientation="horizontal"
             android:layout_marginTop="12dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             android:layout_marginRight="16dp"
             android:layout_marginEnd="16dp">
 
@@ -101,7 +101,7 @@
                 android:layout_marginLeft="16dp"
                 tools:text="Date"
                 android:layout_gravity="center_vertical"
-                android:textSize="14sp"/>
+                android:textSize="16sp"/>
 
     </LinearLayout>
 
@@ -112,7 +112,7 @@
             android:orientation="horizontal"
             android:layout_marginTop="12dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
             android:layout_marginEnd="16dp">
@@ -131,7 +131,7 @@
                 android:layout_marginLeft="16dp"
                 tools:text="Cost"
                 android:layout_gravity="center_vertical"
-                android:textSize="14sp"/>
+                android:textSize="16sp"/>
 
     </LinearLayout>
 

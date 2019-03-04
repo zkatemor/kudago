@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <ImageButton
+            android:id="@+id/ib_close"
+            android:src="@drawable/ic_cross"
+            android:layout_marginBottom="21dp"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="21dp"
+            android:layout_width="14dp"
+            android:layout_height="14dp"/>
+
+    <TextView
+            android:id="@+id/tv_select"
+            android:text="@string/select_city"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="37dp"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+</android.support.v7.widget.Toolbar>

@@ -13,12 +13,13 @@
             android:layout_width="48dp"
             android:layout_height="32dp">
 
-    <ImageView
+        <ImageView
             android:id="@+id/image_view_back"
-            android:src="@drawable/ic_shape"
             android:layout_gravity="center"
             android:layout_width="16dp"
+            android:src="@drawable/ic_arrow"
             android:layout_height="16dp"/>
+
     </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

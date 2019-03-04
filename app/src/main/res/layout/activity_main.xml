@@ -12,6 +12,7 @@
             android:background="@color/colorWhite"
             android:id="@+id/layout_toolbar_main"
             android:layout_width="match_parent"
+            app:elevation="0dp"
             android:layout_height="wrap_content">
 
         <include
@@ -40,5 +41,11 @@
             tools:itemCount="30"/>
 
     </android.support.design.widget.CoordinatorLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>
