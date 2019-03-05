@@ -16,7 +16,7 @@ class EventAdapter(private val items: ArrayList<EventCard>) : RecyclerView.Adapt
     }
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): EventViewHolder {
-        return EventViewHolder(LayoutInflater.from(p0.context).inflate(R.layout.event_card, p0, false))
+        return EventViewHolder(LayoutInflater.from(p0.context).inflate(R.layout.event_card_model, p0, false))
     }
 
     override fun onBindViewHolder(p0: EventViewHolder, p1: Int) {

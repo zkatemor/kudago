@@ -18,6 +18,7 @@
                 android:id="@+id/layout_city"
                 android:layout_gravity="end"
                 android:layout_marginEnd="16dp"
+                android:onClick="onClickCityButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 

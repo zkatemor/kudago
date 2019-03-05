@@ -19,8 +19,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         addEvents()
-        rv_event_card.layoutManager = LinearLayoutManager(this)
-        rv_event_card.adapter = EventAdapter(event_cards)
+        rec_view_event_card.layoutManager = LinearLayoutManager(this)
+        rec_view_event_card.adapter = EventAdapter(event_cards)
     }
 
     private fun addEvents(){
@@ -34,6 +34,11 @@ class MainActivity : AppCompatActivity() {
 
     fun onClickEventCard(v : View){
         val intent = Intent(this, EventActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun onClickCityButton(v : View){
+        val intent = Intent(this, CitiesActivity::class.java)
         startActivity(intent)
     }
 }
