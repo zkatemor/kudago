@@ -8,6 +8,7 @@
 
     <FrameLayout
             android:background="@drawable/back_button"
+            android:onClick="onClickArrow"
             android:layout_marginTop="14dp"
             android:layout_marginStart="8dp"
             android:layout_width="48dp"

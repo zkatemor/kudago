@@ -3,6 +3,7 @@ package com.zkatemor.kudago.activities
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
 import com.zkatemor.kudago.R
 import com.zkatemor.kudago.adapters.CityAdapter
 import com.zkatemor.kudago.models.City
@@ -29,5 +30,9 @@ class CitiesActivity : AppCompatActivity() {
         cities.add(City("Сочи"))
         cities.add(City("Екатеринбург"))
         cities.add(City("Норильск"))
+    }
+
+    fun onClickCross(v : View){
+        onBackPressed()
     }
 }
