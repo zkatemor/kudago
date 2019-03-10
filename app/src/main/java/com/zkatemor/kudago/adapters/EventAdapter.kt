@@ -8,6 +8,8 @@ import com.zkatemor.kudago.R
 import com.zkatemor.kudago.models.EventCard
 import android.widget.TextView
 import android.widget.ImageView
+import android.widget.LinearLayout
+import com.bumptech.glide.Glide
 
 class EventAdapter(private val items: ArrayList<EventCard>) : RecyclerView.Adapter<EventAdapter.EventViewHolder>() {
 
@@ -26,11 +28,13 @@ class EventAdapter(private val items: ArrayList<EventCard>) : RecyclerView.Adapt
         p0.description.text = item.getDescription
         p0.location.text = item.getLocation
         p0.date.text = item.getDate
-        p0.cost.text = item.getCost.toString()
-        p0.image.setImageResource(item.getImageId)
+        p0.cost.text = item.getCost
+        Glide.with(p0.main_layout).load(item.getImageURL).into(p0.image)
+       // p0.image.setImageResource(item.getImageURL)
     }
 
     class EventViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        var main_layout : LinearLayout
         var title: TextView
         var description: TextView
         var location: TextView
@@ -40,6 +44,7 @@ class EventAdapter(private val items: ArrayList<EventCard>) : RecyclerView.Adapt
 
         init {
             super.itemView
+            main_layout = itemView.findViewById(R.id.main_layout) as LinearLayout
             title = itemView.findViewById(R.id.text_view_title) as TextView
             description = itemView.findViewById(R.id.text_view_description) as TextView
             location = itemView.findViewById(R.id.text_view_location) as TextView

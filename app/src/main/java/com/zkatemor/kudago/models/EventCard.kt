@@ -1,7 +1,18 @@
 package com.zkatemor.kudago.models
 
-class EventCard(private var title : String, private var description: String, private var location: String,
-                private var date : String, private var cost : Int, private var imageId : Int) {
+class EventCard(
+    private val id: Int,
+    private var title: String,
+    private var description: String,
+    private var fullDescription: String,
+    private var location: String,
+    private var date: String,
+    private var cost: String,
+    private var imageURL: String
+) {
+
+    val getId: Int
+        get() = id
 
     val getTitle: String
         get() = title
@@ -9,15 +20,18 @@ class EventCard(private var title : String, private var description: String, pri
     val getDescription: String
         get() = description
 
+    val getFullDesctiption: String
+        get() = fullDescription
+
     val getLocation: String
         get() = location
 
     val getDate: String
-        get() = date
+         get() = date
 
-    val getCost: Int
+    val getCost: String
         get() = cost
 
-    val getImageId: Int
-        get() = imageId
+    val getImageURL: String
+         get() = imageURL
 }
