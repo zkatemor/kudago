@@ -10,7 +10,6 @@ class EventCard(
     private var cost: String,
     private var imageURL: String
 ) {
-
     val getId: Int
         get() = id
 

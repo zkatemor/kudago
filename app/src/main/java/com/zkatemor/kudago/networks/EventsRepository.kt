@@ -15,10 +15,12 @@ class EventsRepository {
     }
 
     fun getEvents(
-        responseCallback: ResponseCallback<EventsResponse>) {
+        responseCallback: ResponseCallback<EventsResponse>
+    ) {
         //retrofit async
         NetworkService.instance.service.getEvents()
             .enqueue(object : Callback<EventsResponse> {
+
                 override fun onFailure(call: Call<EventsResponse>, t: Throwable) {
                     responseCallback.onFailure("Getting events error")
                 }
@@ -26,7 +28,7 @@ class EventsRepository {
                 override fun onResponse(call: Call<EventsResponse>, response: Response<EventsResponse>) {
                     val eventsResponse = response.body()
 
-                    if (eventsResponse != null && response.isSuccessful) {
+                    if (eventsResponse != null) {
                         responseCallback.onSuccess(eventsResponse)
                     } else {
                         responseCallback.onFailure("Getting events error")

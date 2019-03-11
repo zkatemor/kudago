@@ -15,17 +15,20 @@
         android:background="@drawable/event_card_layout"
         android:id="@+id/main_layout">
 
-    <ImageView
+    <com.joooonho.SelectableRoundedImageView
             android:id="@+id/image_view_event"
             android:background="@drawable/image_event_card"
             android:layout_width="match_parent"
+            app:sriv_left_top_corner_radius="8dp"
+            app:sriv_right_top_corner_radius="8dp"
+            android:scaleType="centerCrop"
             android:layout_height="160dp"/>
 
     <TextView
             android:id="@+id/text_view_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textColor="@color/colorBlack"
             android:textStyle="bold"
             android:textAllCaps="true"
@@ -39,7 +42,7 @@
             android:id="@+id/text_view_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textColor="@color/colorBlack"
             android:text="Description"
             app:layout_constraintStart_toStartOf="parent"
@@ -72,7 +75,7 @@
                 android:layout_marginLeft="16dp"
                 tools:text="Location"
                 android:layout_gravity="center_vertical"
-                android:textSize="16sp"/>
+                android:textSize="14sp"/>
 
     </LinearLayout>
 
@@ -101,7 +104,7 @@
                 android:layout_marginLeft="16dp"
                 tools:text="Date"
                 android:layout_gravity="center_vertical"
-                android:textSize="16sp"/>
+                android:textSize="14sp"/>
 
     </LinearLayout>
 
@@ -131,7 +134,7 @@
                 android:layout_marginLeft="16dp"
                 tools:text="Cost"
                 android:layout_gravity="center_vertical"
-                android:textSize="16sp"/>
+                android:textSize="14sp"/>
 
     </LinearLayout>
 

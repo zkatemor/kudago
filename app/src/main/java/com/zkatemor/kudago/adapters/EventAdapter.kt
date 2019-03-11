@@ -30,7 +30,6 @@ class EventAdapter(private val items: ArrayList<EventCard>) : RecyclerView.Adapt
         p0.date.text = item.getDate
         p0.cost.text = item.getCost
         Glide.with(p0.main_layout).load(item.getImageURL).into(p0.image)
-       // p0.image.setImageResource(item.getImageURL)
     }
 
     class EventViewHolder(view: View) : RecyclerView.ViewHolder(view) {

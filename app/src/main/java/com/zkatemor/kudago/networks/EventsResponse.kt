@@ -34,9 +34,7 @@ data class Place(
     @SerializedName("title")
     val title: String?,
     @SerializedName("address")
-    val address: String?,
-    @SerializedName("coords")
-    val coords: Coordinates?
+    val address: String?
 )
 
 data class Image(
@@ -49,11 +47,4 @@ data class Date(
     var start_date: String?,
     @SerializedName("end_date")
     var end_date: String?
-)
-
-data class Coordinates(
-    @SerializedName("lat")
-    val lat: Double?,
-    @SerializedName("lon")
-    val lon: Double?
 )

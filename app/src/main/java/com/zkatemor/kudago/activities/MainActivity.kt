@@ -10,6 +10,8 @@ import com.zkatemor.kudago.adapters.EventAdapter
 import com.zkatemor.kudago.models.EventCard
 import com.zkatemor.kudago.networks.*
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,18 +22,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         addEvents()
-        rec_view_event_card.layoutManager = LinearLayoutManager(this)
-        rec_view_event_card.adapter = EventAdapter(eventCards)
     }
 
     private fun addEvents() {
-        /* eventCards.add(EventCard("Title", "Description", "Location", "Date", 0,
-             R.drawable.image_event_card))
-         eventCards.add(EventCard("Title1", "Description1", "Location1", "Date1", 1,
-             R.drawable.image_event_card))
-         eventCards.add(EventCard("Title2", "Description2", "Location2", "Date2", 2,
-             R.drawable.image_event_card))*/
-
         EventsRepository.instance.getEvents(object : ResponseCallback<EventsResponse> {
 
             override fun onSuccess(apiResponse: EventsResponse) {
@@ -43,20 +36,17 @@ class MainActivity : AppCompatActivity() {
                             it.description,
                             it.fullDescription,
                             convertPlace(it.place),
-                            convertDate(
-                                it.dates[0].start_date,
-                                it.dates[0].end_date
-                            )
-                            ,
+                            convertDate(it.dates[0].start_date, it.dates[0].end_date),
                             it.price,
                             it.images[0].image
                         )
                     )
                 }
+                rec_view_event_card.layoutManager = LinearLayoutManager(this@MainActivity)
+                rec_view_event_card.adapter = EventAdapter(eventCards)
             }
 
             override fun onFailure(errorMessage: String) {
-               // text.text = errorMessage
             }
         })
     }
@@ -67,9 +57,9 @@ class MainActivity : AppCompatActivity() {
         if (place != null) {
             if (place.title != null)
                 result += place.title
-
-            if (place.address != null)
-                result += place.address
+            else
+                if (place.address != null)
+                    result += place.address
         }
 
         return result
@@ -77,8 +67,45 @@ class MainActivity : AppCompatActivity() {
 
     private fun convertDate(sDate: String?, eDate: String?): String {
         var result: String = ""
+        var sMonth: String = ""
+        var sDay: String = ""
+        var eMonth: String = ""
+        var eDay: String = ""
 
+        if (sDate != null) {
+            sMonth += sDate!!.substring(5, 7)
+            sDay += sDate!!.substring(8)
+        }
 
+        if (eDate != null && !sDate.equals(eDate)) {
+            eMonth += eDate!!.substring(5, 7)
+            eDay += eDate!!.substring(8)
+        }
+
+        val monthNames = arrayOf(
+            "января",
+            "февраля",
+            "марта",
+            "апреля",
+            "мая",
+            "июня",
+            "июля",
+            "августа",
+            "сентября",
+            "октября",
+            "ноября",
+            "декабря"
+        )
+
+        if (sDate != null) {
+            result += sDay.toInt().toString()
+
+            if (!sMonth.equals(eMonth))
+                result += " " + monthNames[sMonth.toInt() - 1]
+        }
+
+        if (eDate != null && !sDate.equals(eDate))
+            result += " - " + eDay.toInt().toString() + " " + monthNames[eMonth.toInt() - 1]
 
         return result
     }
