@@ -43,6 +43,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14sp"
+            android:ellipsize="end"
+            android:lines="2"
             android:textColor="@color/colorBlack"
             android:text="Description"
             app:layout_constraintStart_toStartOf="parent"
