@@ -10,8 +10,8 @@ import com.zkatemor.kudago.adapters.EventAdapter
 import com.zkatemor.kudago.models.EventCard
 import com.zkatemor.kudago.networks.*
 import kotlinx.android.synthetic.main.activity_main.*
+import java.text.DateFormatSymbols
 import java.util.*
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -82,30 +82,15 @@ class MainActivity : AppCompatActivity() {
             eDay += eDate!!.substring(8)
         }
 
-        val monthNames = arrayOf(
-            "января",
-            "февраля",
-            "марта",
-            "апреля",
-            "мая",
-            "июня",
-            "июля",
-            "августа",
-            "сентября",
-            "октября",
-            "ноября",
-            "декабря"
-        )
-
         if (sDate != null) {
             result += sDay.toInt().toString()
 
             if (!sMonth.equals(eMonth))
-                result += " " + monthNames[sMonth.toInt() - 1]
+                result += " " + DateFormatSymbols().getMonths()[sMonth.toInt() - 1]
         }
 
         if (eDate != null && !sDate.equals(eDate))
-            result += " - " + eDay.toInt().toString() + " " + monthNames[eMonth.toInt() - 1]
+            result += " - " + eDay.toInt().toString() + " " + DateFormatSymbols().getMonths()[eMonth.toInt() - 1]
 
         return result
     }
