@@ -42,13 +42,31 @@ class MainActivity : AppCompatActivity() {
                         )
                     )
                 }
-                rec_view_event_card.layoutManager = LinearLayoutManager(this@MainActivity)
-                rec_view_event_card.adapter = EventAdapter(eventCards)
+                setDataOnRecView()
             }
 
             override fun onFailure(errorMessage: String) {
             }
         })
+    }
+
+    private fun setDataOnRecView(){
+        val adapter = EventAdapter(eventCards)
+        rec_view_event_card.layoutManager = LinearLayoutManager(this)
+        rec_view_event_card.adapter = adapter
+
+        adapter.onItemClick = { event ->
+            val intent = Intent(this, EventActivity::class.java)
+            intent.putExtra("id", event.getId)
+            intent.putExtra("title", event.getTitle)
+            intent.putExtra("description", event.getDescription)
+            intent.putExtra("fullDescription", event.getFullDesctiption)
+            intent.putExtra("place", event.getLocation)
+            intent.putExtra("date", event.getDate)
+            intent.putExtra("price", event.getCost)
+            intent.putExtra("images", event.getImageURL)
+            startActivity(intent)
+        }
     }
 
     private fun convertPlace(place: Place?): String {
@@ -93,11 +111,6 @@ class MainActivity : AppCompatActivity() {
             result += " - " + eDay.toInt().toString() + " " + DateFormatSymbols().getMonths()[eMonth.toInt() - 1]
 
         return result
-    }
-
-    fun onClickEventCard(v: View) {
-        val intent = Intent(this, EventActivity::class.java)
-        startActivity(intent)
     }
 
     fun onClickCityButton(v: View) {

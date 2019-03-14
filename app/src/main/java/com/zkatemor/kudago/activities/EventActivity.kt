@@ -10,6 +10,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.android.synthetic.main.activity_event.*
 
 class EventActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -19,7 +20,19 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_event)
 
+        setData()
+
         createMapView()
+    }
+
+    private fun setData(){
+        val data = intent.extras
+        text_view_title.text = data.getString("title")
+        text_view_short_description.text = data.getString("description")
+        text_view_full_description.text = data.getString("fullDescription")
+        text_view_location.text = data.getString("place")
+        text_view_date.text = data.getString("date")
+        text_view_cost.text = data.getString("price")
     }
 
     private fun createMapView() {

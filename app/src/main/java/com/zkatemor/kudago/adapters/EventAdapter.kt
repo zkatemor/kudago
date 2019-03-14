@@ -11,7 +11,10 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import com.bumptech.glide.Glide
 
-class EventAdapter(private val items: ArrayList<EventCard>) : RecyclerView.Adapter<EventAdapter.EventViewHolder>() {
+class EventAdapter(private val items: ArrayList<EventCard>) :
+    RecyclerView.Adapter<EventAdapter.EventViewHolder>() {
+
+    var onItemClick: ((EventCard) -> Unit)? = null
 
     override fun getItemCount(): Int {
         return items.size
@@ -32,7 +35,7 @@ class EventAdapter(private val items: ArrayList<EventCard>) : RecyclerView.Adapt
         Glide.with(p0.main_layout).load(item.getImageURL).into(p0.image)
     }
 
-    class EventViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class EventViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var main_layout : LinearLayout
         var title: TextView
         var description: TextView
@@ -50,6 +53,10 @@ class EventAdapter(private val items: ArrayList<EventCard>) : RecyclerView.Adapt
             date = itemView.findViewById(R.id.text_view_date) as TextView
             cost = itemView.findViewById(R.id.text_view_cost) as TextView
             image = itemView.findViewById(R.id.image_view_event) as ImageView
+
+            itemView.setOnClickListener {
+                onItemClick?.invoke(items[adapterPosition])
+            }
         }
     }
 }
