@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+        xmlns:android = "http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape
+                xmlns:android = "http://schemas.android.com/apk/res/android"
+                android:shape = "ring"
+                android:innerRadius = "0dp"
+                android:thickness = "5dp"
+                android:useLevel = "false">
+
+            <solid
+                    android:color = "@color/colorWhite" />
+        </shape>
+    </item>
+
+    <item>
+        <shape
+                xmlns:android = "http://schemas.android.com/apk/res/android"
+                android:shape = "ring"
+                android:innerRadius = "0dp"
+                android:thickness = "3dp"
+                android:useLevel = "false">
+
+            <solid
+                    android:color="@color/colorRed" />
+        </shape>
+    </item>
+
+</layer-list>

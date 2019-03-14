@@ -10,6 +10,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.zkatemor.kudago.adapters.ViewPagerAdapter
 import kotlinx.android.synthetic.main.activity_event.*
 
 class EventActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -33,6 +34,16 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
         text_view_location.text = data.getString("place")
         text_view_date.text = data.getString("date")
         text_view_cost.text = data.getString("price")
+
+        val images = data.get("images") as ArrayList<String>
+
+        if (images.size > 0) {
+            val viewPager = view_pager
+            val viewPagerAdapter = ViewPagerAdapter(this, images)
+            viewPager.adapter = viewPagerAdapter
+            tab_view_pager.setupWithViewPager(viewPager)
+        }
+
     }
 
     private fun createMapView() {

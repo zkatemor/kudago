@@ -16,6 +16,7 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
     private val eventCards: ArrayList<EventCard> = ArrayList()
+    private val images: ArrayList<ArrayList<String>> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +30,12 @@ class MainActivity : AppCompatActivity() {
 
             override fun onSuccess(apiResponse: EventsResponse) {
                 apiResponse.events.forEach {
+                    val currentImages = ArrayList<String>()
+                    it.images.forEach {
+                        currentImages.add(it.image)
+                    }
+                    images.add(currentImages)
+
                     eventCards.add(
                         EventCard(
                             it.id,
@@ -38,7 +45,7 @@ class MainActivity : AppCompatActivity() {
                             convertPlace(it.place),
                             convertDate(it.dates[0].start_date, it.dates[0].end_date),
                             it.price,
-                            it.images[0].image
+                            currentImages
                         )
                     )
                 }
@@ -64,7 +71,7 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("place", event.getLocation)
             intent.putExtra("date", event.getDate)
             intent.putExtra("price", event.getCost)
-            intent.putExtra("images", event.getImageURL)
+            intent.putExtra("images", event.getImages)
             startActivity(intent)
         }
     }

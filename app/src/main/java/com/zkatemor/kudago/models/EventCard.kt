@@ -8,7 +8,7 @@ class EventCard(
     private var location: String,
     private var date: String,
     private var cost: String,
-    private var imageURL: String
+    private var imagesURL: ArrayList<String>
 ) {
     val getId: Int
         get() = id
@@ -26,11 +26,14 @@ class EventCard(
         get() = location
 
     val getDate: String
-         get() = date
+        get() = date
 
     val getCost: String
         get() = cost
 
     val getImageURL: String
-         get() = imageURL
+        get() = imagesURL[0]
+
+    val getImages: ArrayList<String>
+        get() = imagesURL
 }
