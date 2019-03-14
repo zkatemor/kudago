@@ -26,14 +26,26 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
         createMapView()
     }
 
-    private fun setData(){
+    private fun setData() {
         val data = intent.extras
         text_view_title.text = data.getString("title")
         text_view_short_description.text = data.getString("description")
         text_view_full_description.text = data.getString("fullDescription")
-        text_view_location.text = data.getString("place")
-        text_view_date.text = data.getString("date")
-        text_view_cost.text = data.getString("price")
+
+        if (data.getString("place") != "")
+            text_view_location.text = data.getString("place")
+        else
+            location_layout.visibility = View.GONE
+
+        if (data.getString("date") != "")
+            text_view_date.text = data.getString("date")
+        else
+            date_layout.visibility = View.GONE
+
+        if (data.getString("price") != "")
+            text_view_cost.text = data.getString("price")
+        else
+            cost_layout.visibility = View.GONE
 
         val images = data.get("images") as ArrayList<String>
 
@@ -61,7 +73,7 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
 
-    fun onClickArrow(v : View){
+    fun onClickArrow(v: View) {
         onBackPressed()
     }
 }

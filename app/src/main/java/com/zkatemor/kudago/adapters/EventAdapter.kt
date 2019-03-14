@@ -10,6 +10,12 @@ import android.widget.TextView
 import android.widget.ImageView
 import android.widget.LinearLayout
 import com.bumptech.glide.Glide
+import android.R.attr.bottom
+import android.R.attr.right
+import android.R.attr.top
+import android.R.attr.left
+import android.app.ActionBar
+
 
 class EventAdapter(private val items: ArrayList<EventCard>) :
     RecyclerView.Adapter<EventAdapter.EventViewHolder>() {
@@ -29,14 +35,30 @@ class EventAdapter(private val items: ArrayList<EventCard>) :
 
         p0.title.text = item.getTitle
         p0.description.text = item.getDescription
-        p0.location.text = item.getLocation
-        p0.date.text = item.getDate
-        p0.cost.text = item.getCost
+
+        if (item.getLocation != "")
+            p0.location.text = item.getLocation
+        else
+            p0.location_layout.visibility = View.GONE
+
+        if (item.getDate != "")
+            p0.date.text = item.getDate
+        else
+            p0.date_layout.visibility = View.GONE
+
+        if (item.getCost != "")
+            p0.cost.text = item.getCost
+        else
+            p0.cost_layout.visibility = View.GONE
+
         Glide.with(p0.main_layout).load(item.getImageURL).into(p0.image)
     }
 
     inner class EventViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var main_layout : LinearLayout
+        var main_layout: LinearLayout
+        var location_layout: LinearLayout
+        var date_layout: LinearLayout
+        var cost_layout: LinearLayout
         var title: TextView
         var description: TextView
         var location: TextView
@@ -47,6 +69,9 @@ class EventAdapter(private val items: ArrayList<EventCard>) :
         init {
             super.itemView
             main_layout = itemView.findViewById(R.id.main_layout) as LinearLayout
+            cost_layout = itemView.findViewById(R.id.cost_layout) as LinearLayout
+            date_layout = itemView.findViewById(R.id.date_layout) as LinearLayout
+            location_layout = itemView.findViewById(R.id.location_layout) as LinearLayout
             title = itemView.findViewById(R.id.text_view_title) as TextView
             description = itemView.findViewById(R.id.text_view_description) as TextView
             location = itemView.findViewById(R.id.text_view_location) as TextView
