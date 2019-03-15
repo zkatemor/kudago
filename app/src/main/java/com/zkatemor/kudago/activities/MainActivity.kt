@@ -4,6 +4,8 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import com.zkatemor.kudago.R
 import com.zkatemor.kudago.adapters.EventAdapter
@@ -15,13 +17,14 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val eventCards: ArrayList<EventCard> = ArrayList()
-    private val images: ArrayList<ArrayList<String>> = ArrayList()
+    private val DIRECTION_UP : Int = -1
+    private var eventCards: ArrayList<EventCard> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        initializeSwipeRefreshLayoutListener()
         addEvents()
     }
 
@@ -34,7 +37,6 @@ class MainActivity : AppCompatActivity() {
                     it.images.forEach {
                         currentImages.add(it.image)
                     }
-                    images.add(currentImages)
 
                     eventCards.add(
                         EventCard(
@@ -53,6 +55,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(errorMessage: String) {
+                error_layout.visibility = View.VISIBLE
             }
         })
     }
@@ -74,6 +77,20 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("images", event.getImages)
             startActivity(intent)
         }
+
+        initializeScrollListenerOnRecView()
+
+        swipe_refresh_layout.isRefreshing = false
+        progress_bar_layout.visibility = View.INVISIBLE
+    }
+
+    private fun initializeScrollListenerOnRecView(){
+        rec_view_event_card.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                swipe_refresh_layout.isEnabled = !(recyclerView?.canScrollVertically(DIRECTION_UP) ?: return)
+            }
+        })
     }
 
     private fun convertPlace(place: Place?): String {
@@ -118,6 +135,15 @@ class MainActivity : AppCompatActivity() {
             result += " - " + eDay.toInt().toString() + " " + DateFormatSymbols().getMonths()[eMonth.toInt() - 1]
 
         return result
+    }
+
+    private fun initializeSwipeRefreshLayoutListener(){
+        swipe_refresh_layout.setColorSchemeResources(R.color.colorRed)
+        swipe_refresh_layout.setOnRefreshListener {
+            progress_bar_layout.visibility = View.VISIBLE
+            eventCards = ArrayList()
+            addEvents()
+        }
     }
 
     fun onClickCityButton(v: View) {

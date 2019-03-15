@@ -28,6 +28,7 @@
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_refresh_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -58,27 +59,24 @@
 
     <RelativeLayout
             android:id="@+id/error_layout"
+            android:background="@color/colorWhite"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone">
-
-        <ProgressBar
-                android:id="@+id/progress_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"/>
 
         <ImageView
                 android:id="@+id/image_view_error"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:src="@drawable/ic_error_image"/>
 
         <TextView
                 android:id="@+id/text_view_error"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:layout_centerHorizontal="true"
                 android:text="@string/text_error"
                 android:textColor="@color/colorBlack"
                 android:textSize="16sp"/>
@@ -103,6 +101,20 @@
 
         </FrameLayout>
 
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/progress_bar_layout"
+            android:background="@color/colorWhite"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:layout_centerInParent="true"/>
     </RelativeLayout>
 
 </FrameLayout>

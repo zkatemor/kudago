@@ -36,8 +36,10 @@ class EventAdapter(private val items: ArrayList<EventCard>) :
         p0.title.text = item.getTitle
         p0.description.text = item.getDescription
 
-        if (item.getLocation != "")
+        if (item.getLocation != ""){
             p0.location.text = item.getLocation
+            p0.location_layout.visibility = View.VISIBLE
+        }
         else
             p0.location_layout.visibility = View.GONE
 
