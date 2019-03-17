@@ -1,5 +1,7 @@
-package com.zkatemor.kudago.networks
+package com.zkatemor.kudago.util
 
+import com.zkatemor.kudago.networks.EventsResponse
+import com.zkatemor.kudago.networks.ResponseCallback
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

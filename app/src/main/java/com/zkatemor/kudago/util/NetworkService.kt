@@ -1,6 +1,8 @@
-package com.zkatemor.kudago.networks
+package com.zkatemor.kudago.util
 
 import com.zkatemor.kudago.BuildConfig
+import com.zkatemor.kudago.networks.BASE_URL
+import com.zkatemor.kudago.networks.EventsService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

@@ -5,18 +5,19 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.View
 import com.zkatemor.kudago.R
 import com.zkatemor.kudago.adapters.EventAdapter
 import com.zkatemor.kudago.models.EventCard
 import com.zkatemor.kudago.networks.*
+import com.zkatemor.kudago.util.EventsRepository
+import com.zkatemor.kudago.util.Tools
 import kotlinx.android.synthetic.main.activity_main.*
-import java.text.DateFormatSymbols
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
+    private val tools: Tools by lazy(LazyThreadSafetyMode.NONE) { Tools(this@MainActivity) }
     private val DIRECTION_UP : Int = -1
     private var eventCards: ArrayList<EventCard> = ArrayList()
 
@@ -24,8 +25,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        initializeSwipeRefreshLayoutListener()
-        addEvents()
+        if (tools.isConnected()) {
+            initializeSwipeRefreshLayoutListener()
+            addEvents()
+        }
+        else {
+            error_layout.visibility = View.VISIBLE
+        }
     }
 
     private fun addEvents() {
@@ -44,8 +50,8 @@ class MainActivity : AppCompatActivity() {
                             it.title,
                             it.description,
                             it.fullDescription,
-                            convertPlace(it.place),
-                            convertDate(it.dates[0].start_date, it.dates[0].end_date),
+                            tools.convertPlace(it.place),
+                            tools.convertDate(it.dates[0].start_date, it.dates[0].end_date),
                             it.price,
                             currentImages
                         )
@@ -93,56 +99,17 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun convertPlace(place: Place?): String {
-        var result: String = ""
-
-        if (place != null) {
-            if (place.title != null)
-                result += place.title
-            else
-                if (place.address != null)
-                    result += place.address
-        }
-
-        return result
-    }
-
-    private fun convertDate(sDate: String?, eDate: String?): String {
-        var result: String = ""
-        var sMonth: String = ""
-        var sDay: String = ""
-        var eMonth: String = ""
-        var eDay: String = ""
-
-        if (sDate != null) {
-            sMonth += sDate!!.substring(5, 7)
-            sDay += sDate!!.substring(8)
-        }
-
-        if (eDate != null && !sDate.equals(eDate)) {
-            eMonth += eDate!!.substring(5, 7)
-            eDay += eDate!!.substring(8)
-        }
-
-        if (sDate != null) {
-            result += sDay.toInt().toString()
-
-            if (!sMonth.equals(eMonth))
-                result += " " + DateFormatSymbols().getMonths()[sMonth.toInt() - 1]
-        }
-
-        if (eDate != null && !sDate.equals(eDate))
-            result += " - " + eDay.toInt().toString() + " " + DateFormatSymbols().getMonths()[eMonth.toInt() - 1]
-
-        return result
-    }
-
     private fun initializeSwipeRefreshLayoutListener(){
         swipe_refresh_layout.setColorSchemeResources(R.color.colorRed)
+        progress_bar_layout.visibility = View.VISIBLE
+
         swipe_refresh_layout.setOnRefreshListener {
-            progress_bar_layout.visibility = View.VISIBLE
-            eventCards = ArrayList()
-            addEvents()
+            if (tools.isConnected()) {
+                eventCards = ArrayList()
+                addEvents()
+            }
+            else
+                error_layout.visibility = View.VISIBLE
         }
     }
 
