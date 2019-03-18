@@ -12,18 +12,20 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.zkatemor.kudago.adapters.ViewPagerAdapter
 import kotlinx.android.synthetic.main.activity_event.*
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.zkatemor.kudago.util.Tools
 
 class EventActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var googleMap: GoogleMap
+    private var coordinates: ArrayList<Double> = ArrayList()
+    private val tools: Tools by lazy(LazyThreadSafetyMode.NONE) { Tools(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_event)
 
         setData()
-
-        createMapView()
     }
 
     private fun setData() {
@@ -34,8 +36,10 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
 
         if (data.getString("place") != "")
             text_view_location.text = data.getString("place")
-        else
+        else {
             location_layout.visibility = View.GONE
+            map_frame.visibility = View.GONE
+        }
 
         if (data.getString("date") != "")
             text_view_date.text = data.getString("date")
@@ -56,6 +60,12 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
             tab_view_pager.setupWithViewPager(viewPager)
         }
 
+        coordinates = data.get("coordinates") as ArrayList<Double>
+
+        if (coordinates.size != 0)
+            createMapView()
+        else
+            map_frame.visibility = View.GONE
     }
 
     private fun createMapView() {
@@ -67,10 +77,11 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
 
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        val position = LatLng(coordinates[0], coordinates[1])
+
+        googleMap.addMarker(MarkerOptions().position(position)
+            .icon(tools.bitmapDescriptorFromVector(this, R.drawable.ic_map)))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 15.0F))
     }
 
     fun onClickArrow(v: View) {

@@ -8,7 +8,8 @@ class EventCard(
     private var location: String,
     private var date: String,
     private var cost: String,
-    private var imagesURL: ArrayList<String>
+    private var imagesURL: ArrayList<String>,
+    private var coordinates: ArrayList<Double>
 ) {
     val getId: Int
         get() = id
@@ -36,4 +37,7 @@ class EventCard(
 
     val getImages: ArrayList<String>
         get() = imagesURL
+
+    val getCoordinates: ArrayList<Double>
+       get() = coordinates
 }

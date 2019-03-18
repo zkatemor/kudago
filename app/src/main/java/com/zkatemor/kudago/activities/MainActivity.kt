@@ -17,7 +17,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val tools: Tools by lazy(LazyThreadSafetyMode.NONE) { Tools(this@MainActivity) }
+    private val tools: Tools by lazy(LazyThreadSafetyMode.NONE) { Tools(this) }
     private val DIRECTION_UP : Int = -1
     private var eventCards: ArrayList<EventCard> = ArrayList()
 
@@ -53,7 +53,8 @@ class MainActivity : AppCompatActivity() {
                             tools.convertPlace(it.place),
                             tools.convertDate(it.dates[0].start_date, it.dates[0].end_date),
                             it.price,
-                            currentImages
+                            currentImages,
+                            tools.getCoordinates(it.place)
                         )
                     )
                 }
@@ -81,6 +82,7 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("date", event.getDate)
             intent.putExtra("price", event.getCost)
             intent.putExtra("images", event.getImages)
+            intent.putExtra("coordinates", event.getCoordinates)
             startActivity(intent)
         }
 
@@ -94,7 +96,7 @@ class MainActivity : AppCompatActivity() {
         rec_view_event_card.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                swipe_refresh_layout.isEnabled = !(recyclerView?.canScrollVertically(DIRECTION_UP) ?: return)
+                swipe_refresh_layout.isEnabled = !(recyclerView?.canScrollVertically(DIRECTION_UP))
             }
         })
     }

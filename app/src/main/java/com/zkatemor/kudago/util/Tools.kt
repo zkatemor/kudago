@@ -2,9 +2,16 @@ package com.zkatemor.kudago.util
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.support.v4.content.ContextCompat.getSystemService
 import com.zkatemor.kudago.networks.Place
 import java.text.DateFormatSymbols
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.support.v4.content.ContextCompat
+import android.graphics.drawable.Drawable
+import com.google.android.gms.maps.model.BitmapDescriptor
+
+
 
 class Tools(private val context: Context){
 
@@ -55,5 +62,29 @@ class Tools(private val context: Context){
     fun isConnected(): Boolean {
         return (context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
                 .activeNetworkInfo?.isConnected == true
+    }
+
+    fun getCoordinates(place: Place?): ArrayList<Double> {
+        val result: ArrayList<Double> = ArrayList()
+
+        if (place != null && place.coordinates != null) {
+            if (place.coordinates.lat != null)
+                result.add(place.coordinates.lat)
+
+            if (place.coordinates.lon != null)
+                result.add(place.coordinates.lon)
+        }
+
+        return result
+    }
+
+    fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor {
+        val vectorDrawable = ContextCompat.getDrawable(context, vectorResId)
+        vectorDrawable!!.setBounds(0, 0, vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight)
+        val bitmap =
+            Bitmap.createBitmap(vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        vectorDrawable.draw(canvas)
+        return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 }

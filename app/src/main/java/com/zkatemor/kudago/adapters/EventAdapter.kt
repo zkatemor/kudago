@@ -17,8 +17,7 @@ import android.R.attr.left
 import android.app.ActionBar
 
 
-class EventAdapter(private val items: ArrayList<EventCard>) :
-    RecyclerView.Adapter<EventAdapter.EventViewHolder>() {
+class EventAdapter(private val items: ArrayList<EventCard>) : RecyclerView.Adapter<EventAdapter.EventViewHolder>() {
 
     var onItemClick: ((EventCard) -> Unit)? = null
 
