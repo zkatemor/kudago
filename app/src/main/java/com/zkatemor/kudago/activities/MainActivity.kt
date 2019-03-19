@@ -16,7 +16,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-
     private val tools: Tools by lazy(LazyThreadSafetyMode.NONE) { Tools(this) }
     private val DIRECTION_UP : Int = -1
     private var eventCards: ArrayList<EventCard> = ArrayList()

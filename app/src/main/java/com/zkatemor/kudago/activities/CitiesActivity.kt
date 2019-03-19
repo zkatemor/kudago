@@ -13,11 +13,13 @@ import com.zkatemor.kudago.models.City
 import com.zkatemor.kudago.networks.CitiesResponse
 import com.zkatemor.kudago.networks.ResponseCallback
 import com.zkatemor.kudago.util.CitiesRepository
+import com.zkatemor.kudago.util.Tools
 import kotlinx.android.synthetic.main.activity_cities.*
 
 class CitiesActivity : AppCompatActivity() {
 
-    private val cities: ArrayList<City> = ArrayList()
+    private val tools: Tools by lazy(LazyThreadSafetyMode.NONE) { Tools(this) }
+    private var cities: ArrayList<City> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,11 +28,11 @@ class CitiesActivity : AppCompatActivity() {
     }
 
     private fun addCities() {
-        CitiesRepository.instance.getCities(object : ResponseCallback<CitiesResponse> {
+        CitiesRepository.instance.getCities(object : ResponseCallback<ArrayList<CitiesResponse>> {
 
-            override fun onSuccess(apiResponse: CitiesResponse) {
-                apiResponse.cities.forEach{
-                    cities.add(City(it.name))
+            override fun onSuccess(apiResponse: ArrayList<CitiesResponse>) {
+                apiResponse.forEach{
+                        cities.add(City(it.name))
                 }
                 setDataOnRecView()
             }

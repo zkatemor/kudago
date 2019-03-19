@@ -8,8 +8,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.support.v4.content.ContextCompat
-import android.graphics.drawable.Drawable
 import com.google.android.gms.maps.model.BitmapDescriptor
+import com.zkatemor.kudago.models.City
 
 
 class Tools(private val context: Context) {
@@ -88,5 +88,18 @@ class Tools(private val context: Context) {
         vectorDrawable.draw(canvas)
 
         return BitmapDescriptorFactory.fromBitmap(bitmap)
+    }
+
+    fun sortCities(cities: ArrayList<City>): ArrayList<City> {
+        val mskCity = City("Москва")
+        val spbCity = City("Санкт-Петербург")
+
+        cities.remove(spbCity)
+        cities.add(0, spbCity)
+
+        cities.remove(mskCity)
+        cities.add(0, mskCity)
+
+        return cities
     }
 }

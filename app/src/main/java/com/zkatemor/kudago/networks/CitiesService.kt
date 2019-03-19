@@ -5,5 +5,5 @@ import retrofit2.http.GET
 
 interface CitiesService {
     @GET("locations/?lang=ru")
-    fun getCities(): Call<CitiesResponse>
+    fun getCities(): Call<ArrayList<CitiesResponse>>
 }

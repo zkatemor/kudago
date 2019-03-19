@@ -16,26 +16,25 @@ class CitiesRepository {
         val instance: CitiesRepository by lazy { Holder.INSTANCE }
     }
 
-    fun getCities(
-        responseCallback: ResponseCallback<CitiesResponse>
-    ) {
+    fun getCities(responseCallback: ResponseCallback<ArrayList<CitiesResponse>>) {
         //retrofit async
         NetworkService.instance.serviceCity.getCities()
-            .enqueue(object : Callback<CitiesResponse> {
+            .enqueue(object : Callback<ArrayList<CitiesResponse>> {
 
-                override fun onFailure(call: Call<CitiesResponse>, t: Throwable) {
+            override fun onFailure(call: Call<ArrayList<CitiesResponse>>, t: Throwable) {
+                responseCallback.onFailure("Getting cities error")
+            }
+
+            override fun onResponse(call: Call<ArrayList<CitiesResponse>>, response: Response<ArrayList<CitiesResponse>>
+            ) {
+                val citiesResponse = response.body()
+
+                if (citiesResponse != null && response.isSuccessful) {
+                    responseCallback.onSuccess(citiesResponse)
+                } else {
                     responseCallback.onFailure("Getting cities error")
                 }
-
-                override fun onResponse(call: Call<CitiesResponse>, response: Response<CitiesResponse>) {
-                    val citiesResponse = response.body()
-
-                    if (citiesResponse != null) {
-                        responseCallback.onSuccess(citiesResponse)
-                    } else {
-                        responseCallback.onFailure("Getting cities error")
-                    }
-                }
-            })
+            }
+        })
     }
 }
