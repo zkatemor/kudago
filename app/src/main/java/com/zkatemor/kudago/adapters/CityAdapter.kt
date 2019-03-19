@@ -4,32 +4,45 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import com.zkatemor.kudago.R
 import com.zkatemor.kudago.models.City
 
-class CityAdapter(private val items: ArrayList<City>) : RecyclerView.Adapter<CityAdapter.CityViewHolder>() {
+class CityAdapter(private val items: ArrayList<City>)
+    : RecyclerView.Adapter<CityAdapter.CityViewHolder>() {
+
+    var onItemClick: ((City) -> Unit)? = null
 
     override fun getItemCount(): Int {
         return items.size
     }
 
-    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): CityAdapter.CityViewHolder {
-        return CityAdapter.CityViewHolder(LayoutInflater.from(p0.context).inflate(R.layout.city_model, p0, false))
+    override fun onCreateViewHolder(viewGroup: ViewGroup, position: Int): CityViewHolder {
+        return CityViewHolder(LayoutInflater.from(viewGroup.context).
+            inflate(R.layout.city_model, viewGroup, false))
     }
 
-    override fun onBindViewHolder(p0: CityViewHolder, p1: Int) {
-        val item = items[p1]
+    override fun onBindViewHolder(viewHolder: CityViewHolder, position:  Int) {
+        val item = items[position]
 
-        p0.cityName.text = item.getCityName
+        viewHolder.text_view_city.text = item.getCityName
+      /*  if (item.getCityName == cityName)
+            viewHolder.image_view_check.visibility = View.VISIBLE*/
     }
 
-    class CityViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var cityName: TextView
+    inner class CityViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        var text_view_city: TextView
+        var image_view_check: ImageView
 
         init {
             super.itemView
-            cityName = itemView.findViewById(R.id.text_view_city) as TextView
+            text_view_city = itemView.findViewById(R.id.text_view_city) as TextView
+            image_view_check = itemView.findViewById(R.id.image_view_check) as ImageView
+
+            itemView.setOnClickListener {
+                onItemClick?.invoke(items[adapterPosition])
+            }
         }
     }
 }

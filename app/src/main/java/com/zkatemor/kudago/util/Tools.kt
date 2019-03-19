@@ -12,8 +12,7 @@ import android.graphics.drawable.Drawable
 import com.google.android.gms.maps.model.BitmapDescriptor
 
 
-
-class Tools(private val context: Context){
+class Tools(private val context: Context) {
 
     fun convertPlace(place: Place?): String {
         var result: String = ""
@@ -29,12 +28,14 @@ class Tools(private val context: Context){
         return result
     }
 
-     fun convertDate(sDate: String?, eDate: String?): String {
-        var result: String = ""
-        var sMonth: String = ""
-        var sDay: String = ""
-        var eMonth: String = ""
-        var eDay: String = ""
+    fun convertDate(sDate: String?, eDate: String?): String {
+        var result = ""
+
+        var sMonth = ""
+        var sDay = ""
+
+        var eMonth = ""
+        var eDay = ""
 
         if (sDate != null) {
             sMonth += sDate!!.substring(5, 7)
@@ -61,13 +62,13 @@ class Tools(private val context: Context){
 
     fun isConnected(): Boolean {
         return (context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
-                .activeNetworkInfo?.isConnected == true
+            .activeNetworkInfo?.isConnected == true
     }
 
     fun getCoordinates(place: Place?): ArrayList<Double> {
         val result: ArrayList<Double> = ArrayList()
 
-        if (place != null && place.coordinates != null) {
+        if (place != null) {
             if (place.coordinates.lat != null)
                 result.add(place.coordinates.lat)
 
@@ -85,6 +86,7 @@ class Tools(private val context: Context){
             Bitmap.createBitmap(vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         vectorDrawable.draw(canvas)
+
         return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 }

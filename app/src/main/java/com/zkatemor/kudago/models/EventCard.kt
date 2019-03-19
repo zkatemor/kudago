@@ -20,7 +20,7 @@ class EventCard(
     val getDescription: String
         get() = description
 
-    val getFullDesctiption: String
+    val getFullDescription: String
         get() = fullDescription
 
     val getLocation: String

@@ -2,6 +2,7 @@ package com.zkatemor.kudago.util
 
 import com.zkatemor.kudago.BuildConfig
 import com.zkatemor.kudago.networks.BASE_URL
+import com.zkatemor.kudago.networks.CitiesService
 import com.zkatemor.kudago.networks.EventsService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -12,7 +13,8 @@ class NetworkService {
 
     private val okHttpClient: OkHttpClient
     private val retrofit: Retrofit
-    val service: EventsService
+    val serviceEvent: EventsService
+    val serviceCity: CitiesService
 
     private object Holder { val INSTANCE = NetworkService() }
 
@@ -23,7 +25,8 @@ class NetworkService {
     init {
         okHttpClient = buildHttpClient()
         retrofit = buildRetrofit(okHttpClient)
-        service = retrofit.create(EventsService::class.java)
+        serviceEvent = retrofit.create(EventsService::class.java)
+        serviceCity = retrofit.create(CitiesService::class.java)
     }
 
     private fun buildHttpClient(): OkHttpClient {

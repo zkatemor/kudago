@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("id", event.getId)
             intent.putExtra("title", event.getTitle)
             intent.putExtra("description", event.getDescription)
-            intent.putExtra("fullDescription", event.getFullDesctiption)
+            intent.putExtra("fullDescription", event.getFullDescription)
             intent.putExtra("place", event.getLocation)
             intent.putExtra("date", event.getDate)
             intent.putExtra("price", event.getCost)

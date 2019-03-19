@@ -10,11 +10,6 @@ import android.widget.TextView
 import android.widget.ImageView
 import android.widget.LinearLayout
 import com.bumptech.glide.Glide
-import android.R.attr.bottom
-import android.R.attr.right
-import android.R.attr.top
-import android.R.attr.left
-import android.app.ActionBar
 
 
 class EventAdapter(private val items: ArrayList<EventCard>) : RecyclerView.Adapter<EventAdapter.EventViewHolder>() {
