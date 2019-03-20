@@ -91,14 +91,10 @@ class Tools(private val context: Context) {
     }
 
     fun sortCities(cities: ArrayList<City>): ArrayList<City> {
-        val mskCity = City("Москва")
-        val spbCity = City("Санкт-Петербург")
+        cities.removeAll { it.getCityName == "Москва" || it.getCityName == "Санкт-Петербург" }
 
-        cities.remove(spbCity)
-        cities.add(0, spbCity)
-
-        cities.remove(mskCity)
-        cities.add(0, mskCity)
+        cities.add(0, City("Санкт-Петербург", "spb"))
+        cities.add(0, City("Москва", "msk"))
 
         return cities
     }

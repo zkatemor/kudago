@@ -16,11 +16,9 @@ class EventsRepository {
         val instance: EventsRepository by lazy { Holder.INSTANCE }
     }
 
-    fun getEvents(
-        responseCallback: ResponseCallback<EventsResponse>
-    ) {
+    fun getEvents(responseCallback: ResponseCallback<EventsResponse>, location: String) {
         //retrofit async
-        NetworkService.instance.serviceEvent.getEvents()
+        NetworkService.instance.serviceEvent.getEvents(location)
             .enqueue(object : Callback<EventsResponse> {
 
                 override fun onFailure(call: Call<EventsResponse>, t: Throwable) {

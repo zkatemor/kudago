@@ -1,10 +1,10 @@
 package com.zkatemor.kudago.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import com.zkatemor.kudago.R
@@ -31,9 +31,13 @@ class CitiesActivity : AppCompatActivity() {
         CitiesRepository.instance.getCities(object : ResponseCallback<ArrayList<CitiesResponse>> {
 
             override fun onSuccess(apiResponse: ArrayList<CitiesResponse>) {
-                apiResponse.forEach{
-                        cities.add(City(it.name))
+                var tmpCities: ArrayList<City> = ArrayList()
+
+                apiResponse.forEach {
+                    tmpCities.add(City(it.name, it.slug))
                 }
+
+                cities.addAll(tools.sortCities(tmpCities))
                 setDataOnRecView()
             }
 
@@ -43,14 +47,17 @@ class CitiesActivity : AppCompatActivity() {
         })
     }
 
-    private fun setDataOnRecView(){
+    private fun setDataOnRecView() {
         val adapter = CityAdapter(cities)
         rec_view_cities.layoutManager = LinearLayoutManager(this)
         rec_view_cities.adapter = adapter
 
-        adapter.onItemClick = {city ->
+        adapter.onItemClick = { city ->
             val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            intent.putExtra("location", city.getSlug)
+            intent.putExtra("cityName", city.getCityName)
+            setResult(Activity.RESULT_OK, intent)
+            finish()
         }
     }
 

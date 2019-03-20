@@ -1,5 +1,6 @@
 package com.zkatemor.kudago.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -13,12 +14,17 @@ import com.zkatemor.kudago.networks.*
 import com.zkatemor.kudago.util.EventsRepository
 import com.zkatemor.kudago.util.Tools
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.toolbar_main.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
+
     private val tools: Tools by lazy(LazyThreadSafetyMode.NONE) { Tools(this) }
     private val DIRECTION_UP : Int = -1
+    private val REQUEST_CODE_MESSAGE = 1
     private var eventCards: ArrayList<EventCard> = ArrayList()
+    private var location: String = "msk"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +69,8 @@ class MainActivity : AppCompatActivity() {
             override fun onFailure(errorMessage: String) {
                 error_layout.visibility = View.VISIBLE
             }
-        })
+        }
+        ,location)
     }
 
     private fun setDataOnRecView(){
@@ -116,6 +123,21 @@ class MainActivity : AppCompatActivity() {
 
     fun onClickCityButton(v: View) {
         val intent = Intent(this, CitiesActivity::class.java)
-        startActivity(intent)
+        startActivityForResult(intent, REQUEST_CODE_MESSAGE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                REQUEST_CODE_MESSAGE -> {
+                    location = data!!.getStringExtra("location")
+                    text_view_city.text = data!!.getStringExtra("cityName")
+                    eventCards = ArrayList()
+                    addEvents()
+                }
+            }
+        }
     }
 }
