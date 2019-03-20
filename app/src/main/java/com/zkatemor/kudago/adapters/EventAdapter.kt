@@ -1,5 +1,6 @@
 package com.zkatemor.kudago.adapters
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +11,12 @@ import android.widget.TextView
 import android.widget.ImageView
 import android.widget.LinearLayout
 import com.bumptech.glide.Glide
+import com.zkatemor.kudago.util.Tools
 
+class EventAdapter(private val items: ArrayList<EventCard>, context: Context)
+    : RecyclerView.Adapter<EventAdapter.EventViewHolder>() {
 
-class EventAdapter(private val items: ArrayList<EventCard>) : RecyclerView.Adapter<EventAdapter.EventViewHolder>() {
-
+    var tools = Tools(context)
     var onItemClick: ((EventCard) -> Unit)? = null
 
     override fun getItemCount(): Int {
@@ -24,30 +27,36 @@ class EventAdapter(private val items: ArrayList<EventCard>) : RecyclerView.Adapt
         return EventViewHolder(LayoutInflater.from(p0.context).inflate(R.layout.event_card_model, p0, false))
     }
 
-    override fun onBindViewHolder(p0: EventViewHolder, p1: Int) {
-        val item = items[p1]
+    override fun onBindViewHolder(viewHolder: EventViewHolder, position: Int) {
+        val item = items[position]
 
-        p0.title.text = item.getTitle
-        p0.description.text = item.getDescription
+        viewHolder.title.text = item.getTitle
+        viewHolder.description.text = item.getDescription
 
         if (item.getLocation != ""){
-            p0.location.text = item.getLocation
-            p0.location_layout.visibility = View.VISIBLE
+            viewHolder.location.text = item.getLocation
+            viewHolder.location_layout.visibility = View.VISIBLE
         }
         else
-            p0.location_layout.visibility = View.GONE
+            viewHolder.location_layout.visibility = View.GONE
 
-        if (item.getDate != "")
-            p0.date.text = item.getDate
+        if (item.getDate != "") {
+            viewHolder.date.text = item.getDate
+            viewHolder.date_layout.visibility = View.VISIBLE
+        }
         else
-            p0.date_layout.visibility = View.GONE
+            viewHolder.date_layout.visibility = View.GONE
 
-        if (item.getCost != "")
-            p0.cost.text = item.getCost
+        if (item.getCost != "") {
+            viewHolder.cost.text = item.getCost
+            viewHolder.cost_layout.visibility = View.VISIBLE
+        }
         else
-            p0.cost_layout.visibility = View.GONE
+            viewHolder.cost_layout.visibility = View.GONE
 
-        Glide.with(p0.main_layout).load(item.getImageURL).into(p0.image)
+        viewHolder.description.text = tools.removeTags(item.getDescription)
+
+        Glide.with(viewHolder.main_layout).load(item.getImageURL).into(viewHolder.image)
     }
 
     inner class EventViewHolder(view: View) : RecyclerView.ViewHolder(view) {

@@ -7,7 +7,11 @@ import java.text.DateFormatSymbols
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.os.Build
 import android.support.v4.content.ContextCompat
+import android.text.Html
+import android.text.Spanned
+import android.util.Log
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.zkatemor.kudago.models.City
 
@@ -88,6 +92,22 @@ class Tools(private val context: Context) {
         vectorDrawable.draw(canvas)
 
         return BitmapDescriptorFactory.fromBitmap(bitmap)
+    }
+
+    fun removeTags(input: String?): String {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(input, Html.FROM_HTML_MODE_LEGACY).trim().toString()
+        } else {
+            Html.fromHtml(input).toString()
+        }
+    }
+
+    fun getSpanned(input: String?): Spanned?{
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(input, Html.FROM_HTML_MODE_LEGACY)
+        } else {
+            Html.fromHtml(input)
+        }
     }
 
     fun sortCities(cities: ArrayList<City>): ArrayList<City> {

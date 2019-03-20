@@ -9,7 +9,7 @@ import android.widget.TextView
 import com.zkatemor.kudago.R
 import com.zkatemor.kudago.models.City
 
-class CityAdapter(private val items: ArrayList<City>)
+class CityAdapter(private val items: ArrayList<City>, private val location: String?)
     : RecyclerView.Adapter<CityAdapter.CityViewHolder>() {
 
     var onItemClick: ((City) -> Unit)? = null
@@ -27,8 +27,8 @@ class CityAdapter(private val items: ArrayList<City>)
         val item = items[position]
 
         viewHolder.text_view_city.text = item.getCityName
-      /*  if (item.getCityName == cityName)
-            viewHolder.image_view_check.visibility = View.VISIBLE*/
+        if (item.getSlug.equals(location))
+            viewHolder.image_view_check.visibility = View.VISIBLE
     }
 
     inner class CityViewHolder(view: View) : RecyclerView.ViewHolder(view) {

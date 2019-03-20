@@ -48,7 +48,8 @@ class CitiesActivity : AppCompatActivity() {
     }
 
     private fun setDataOnRecView() {
-        val adapter = CityAdapter(cities)
+        val data = intent.extras
+        val adapter = CityAdapter(cities, data?.getString("location"))
         rec_view_cities.layoutManager = LinearLayoutManager(this)
         rec_view_cities.adapter = adapter
 

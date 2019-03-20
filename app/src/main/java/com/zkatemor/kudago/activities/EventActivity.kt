@@ -2,6 +2,7 @@ package com.zkatemor.kudago.activities
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.text.method.LinkMovementMethod
 import android.view.View
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.zkatemor.kudago.R
@@ -12,7 +13,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.zkatemor.kudago.adapters.ViewPagerAdapter
 import kotlinx.android.synthetic.main.activity_event.*
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.zkatemor.kudago.util.Tools
 
 class EventActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -31,8 +31,9 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun setData() {
         val data = intent.extras
         text_view_title.text = data.getString("title")
-        text_view_short_description.text = data.getString("description")
-        text_view_full_description.text = data.getString("fullDescription")
+
+        text_view_short_description.text = tools.getSpanned(data.getString("description"))
+        text_view_full_description.text = tools.getSpanned(data.getString("fullDescription"))
 
         if (data.getString("place") != "")
             text_view_location.text = data.getString("place")
@@ -66,6 +67,11 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
             createMapView()
         else
             map_frame.visibility = View.GONE
+
+        text_view_short_description.movementMethod = LinkMovementMethod.getInstance()
+        text_view_short_description.text = text_view_short_description.text.trim()
+        text_view_full_description.movementMethod = LinkMovementMethod.getInstance()
+        text_view_full_description.text = text_view_full_description.text.trim()
     }
 
     private fun createMapView() {
