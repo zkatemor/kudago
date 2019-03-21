@@ -1,5 +1,7 @@
 package com.zkatemor.kudago.activities
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.method.LinkMovementMethod
@@ -88,6 +90,13 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
         googleMap.addMarker(MarkerOptions().position(position)
             .icon(tools.bitmapDescriptorFromVector(this, R.drawable.ic_map)))
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 15.0F))
+    }
+
+    fun onClickRouteButton(v: View){
+        val intent = Intent(Intent.ACTION_VIEW,
+            Uri.parse("http://maps.google.com/maps?saddr=My+Location&daddr=" +
+                    coordinates[0].toString() + "," + coordinates[1].toString()))
+        startActivity(intent)
     }
 
     fun onClickArrow(v: View) {

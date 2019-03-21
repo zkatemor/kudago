@@ -178,6 +178,21 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
 
+                <Button
+                        android:id="@+id/route_button"
+                        android:layout_gravity="bottom|center"
+                        android:background="@drawable/button_route"
+                        android:layout_marginBottom="8dp"
+                        android:textColor="@color/colorRed"
+                        android:padding="8dp"
+                        android:onClick="onClickRouteButton"
+                        android:text="@string/text_route"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp">
+
+                </Button>
+
             </FrameLayout>
 
         </LinearLayout>

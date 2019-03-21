@@ -5,5 +5,6 @@
     <string name="select_city" translatable="false">Выберите город</string>
     <string name="text_error">Ошибка загрузки данных,\n проверьте соединение с интернетом</string>
     <string name="text_error_bottom">Невозможно загрузить данные, проверьте соединение с интернетом</string>
+    <string name="text_route">Проложить маршрут</string>
     <string name="map_api_key">AIzaSyDhzwCZ4zGofbHvJgnWQsY9j2H4RNAjFLw</string>
 </resources>
