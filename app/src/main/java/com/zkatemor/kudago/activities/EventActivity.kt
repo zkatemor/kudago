@@ -14,6 +14,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.zkatemor.kudago.adapters.ViewPagerAdapter
+import com.zkatemor.kudago.models.EventCard
 import kotlinx.android.synthetic.main.activity_event.*
 import com.zkatemor.kudago.util.Tools
 
@@ -31,30 +32,30 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun setData() {
-        val data = intent.extras
-        text_view_title.text = data.getString("title")
+        val data = intent.extras.getSerializable("event") as EventCard
+        text_view_title.text = data.getTitle
 
-        text_view_short_description.text = tools.getSpanned(data.getString("description"))
-        text_view_full_description.text = tools.getSpanned(data.getString("fullDescription"))
+        text_view_short_description.text = tools.getSpanned(data.getDescription)
+        text_view_full_description.text = tools.getSpanned(data.getFullDescription)
 
-        if (data.getString("place") != "")
-            text_view_location.text = data.getString("place")
+        if (data.getLocation != "")
+            text_view_location.text = data.getLocation
         else {
             location_layout.visibility = View.GONE
             map_frame.visibility = View.GONE
         }
 
-        if (data.getString("date") != "")
-            text_view_date.text = data.getString("date")
+        if (data.getDate != "")
+            text_view_date.text = data.getDate
         else
             date_layout.visibility = View.GONE
 
-        if (data.getString("price") != "")
-            text_view_cost.text = data.getString("price")
+        if (data.getCost != "")
+            text_view_cost.text = data.getCost
         else
             cost_layout.visibility = View.GONE
 
-        val images = data.get("images") as ArrayList<String>
+        val images = data.getImages
 
         if (images.size > 0) {
             val viewPager = view_pager
@@ -63,7 +64,7 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
             tab_view_pager.setupWithViewPager(viewPager)
         }
 
-        coordinates = data.get("coordinates") as ArrayList<Double>
+        coordinates = data.getCoordinates
 
         if (coordinates.size != 0)
             createMapView()

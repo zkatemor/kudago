@@ -90,15 +90,7 @@ class MainActivity : AppCompatActivity() {
 
         adapter.onItemClick = { event ->
             val intent = Intent(this, EventActivity::class.java)
-            intent.putExtra("id", event.getId)
-            intent.putExtra("title", event.getTitle)
-            intent.putExtra("description", event.getDescription)
-            intent.putExtra("fullDescription", event.getFullDescription)
-            intent.putExtra("place", event.getLocation)
-            intent.putExtra("date", event.getDate)
-            intent.putExtra("price", event.getCost)
-            intent.putExtra("images", event.getImages)
-            intent.putExtra("coordinates", event.getCoordinates)
+            intent.putExtra("event", event)
             startActivity(intent)
         }
 

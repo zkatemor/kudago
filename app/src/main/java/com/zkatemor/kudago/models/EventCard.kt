@@ -1,16 +1,40 @@
 package com.zkatemor.kudago.models
 
-class EventCard(
-    private val id: Int,
-    private var title: String,
-    private var description: String,
-    private var fullDescription: String,
-    private var location: String,
-    private var date: String,
-    private var cost: String,
-    private var imagesURL: ArrayList<String>,
-    private var coordinates: ArrayList<Double>
-) {
+import java.io.Serializable
+
+class EventCard : @Transient Serializable{
+    private var id: Int = 0
+    private var title: String = ""
+    private var description: String = ""
+    private var fullDescription: String = ""
+    private var location: String = ""
+    private var date: String = ""
+    private var cost: String = ""
+    private var imagesURL: ArrayList<String> = ArrayList()
+    private var coordinates: ArrayList<Double> = ArrayList()
+
+    constructor(
+        id: Int,
+        title: String,
+        description: String,
+        fullDescription: String,
+        location: String,
+        date: String,
+        cost: String,
+        imagesURL: ArrayList<String>,
+        coordinates: ArrayList<Double>
+    ) {
+        this.id = id
+        this.title = title
+        this.description = description
+        this.fullDescription = fullDescription
+        this.location = location
+        this.date = date
+        this.cost = cost
+        this.imagesURL = imagesURL
+        this.coordinates = coordinates
+    }
+
     val getId: Int
         get() = id
 

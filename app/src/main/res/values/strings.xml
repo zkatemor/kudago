@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">kudago</string>
-    <string name="kudago_text_view" translatable="false">Куда сходить</string>
-    <string name="moscow_city" translatable="false">Москва</string>
-    <string name="select_city" translatable="false">Выберите город</string>
+    <string name="app_name">KudaGo</string>
+    <string name="kudago_text_view">Куда сходить</string>
+    <string name="moscow_city">Москва</string>
+    <string name="select_city">Выберите город</string>
     <string name="text_error">Ошибка загрузки данных,\n проверьте соединение с интернетом</string>
     <string name="text_error_bottom">Невозможно загрузить данные, проверьте соединение с интернетом</string>
     <string name="text_route">Проложить маршрут</string>
