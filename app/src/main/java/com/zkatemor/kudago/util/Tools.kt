@@ -11,10 +11,8 @@ import android.os.Build
 import android.support.v4.content.ContextCompat
 import android.text.Html
 import android.text.Spanned
-import android.util.Log
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.zkatemor.kudago.models.City
-
 
 class Tools(private val context: Context) {
 

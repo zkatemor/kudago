@@ -9,13 +9,18 @@ import android.widget.TextView
 import com.zkatemor.kudago.R
 import com.zkatemor.kudago.models.City
 
-class CityAdapter(private val items: ArrayList<City>, private val location: String?)
+class CityAdapter(private var items: ArrayList<City>, private val location: String?)
     : RecyclerView.Adapter<CityAdapter.CityViewHolder>() {
 
     var onItemClick: ((City) -> Unit)? = null
 
     override fun getItemCount(): Int {
         return items.size
+    }
+
+    fun setItems(data: ArrayList<City>){
+        items = data
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, position: Int): CityViewHolder {

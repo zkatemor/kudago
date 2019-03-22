@@ -19,20 +19,26 @@ import kotlinx.android.synthetic.main.toolbar_main.*
 import java.io.Serializable
 import kotlin.collections.ArrayList
 import android.content.SharedPreferences
+import com.zkatemor.kudago.util.EventsViewModel
+import android.arch.lifecycle.ViewModelProviders
 
 class MainActivity : AppCompatActivity() {
 
     private val tools: Tools by lazy(LazyThreadSafetyMode.NONE) { Tools(this) }
+    private val eventViewModel by lazy { ViewModelProviders.of(this).get(EventsViewModel::class.java) }
     var citySettings: SharedPreferences? = null
     val APP_PREFERENCES = "city_settings"
     val APP_PREFERENCES_CITY = "city"
     val APP_PREFERENCES_CITY_NAME = "cityName"
     private val DIRECTION_UP: Int = -1
     private val REQUEST_CODE_MESSAGE = 1
-    private var eventCards: ArrayList<EventCard> = ArrayList()
     private var location: String = "msk"
     private var page: Int = 1
     private var isLoadData: Boolean = true
+
+    companion object {
+        var eventCards = ArrayList<EventCard>()
+    }
 
     public override fun onSaveInstanceState(savedInstanceState: Bundle) {
         savedInstanceState.clear()
