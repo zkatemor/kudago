@@ -1,12 +1,12 @@
 package com.zkatemor.kudago.activities
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.text.Html
 import android.view.View
 import com.zkatemor.kudago.R
 import com.zkatemor.kudago.adapters.EventAdapter
@@ -16,11 +16,17 @@ import com.zkatemor.kudago.util.EventsRepository
 import com.zkatemor.kudago.util.Tools
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar_main.*
+import java.io.Serializable
 import kotlin.collections.ArrayList
+import android.content.SharedPreferences
 
 class MainActivity : AppCompatActivity() {
 
     private val tools: Tools by lazy(LazyThreadSafetyMode.NONE) { Tools(this) }
+    var citySettings: SharedPreferences? = null
+    val APP_PREFERENCES = "city_settings"
+    val APP_PREFERENCES_CITY = "city"
+    val APP_PREFERENCES_CITY_NAME = "cityName"
     private val DIRECTION_UP: Int = -1
     private val REQUEST_CODE_MESSAGE = 1
     private var eventCards: ArrayList<EventCard> = ArrayList()
@@ -28,9 +34,24 @@ class MainActivity : AppCompatActivity() {
     private var page: Int = 1
     private var isLoadData: Boolean = true
 
+    public override fun onSaveInstanceState(savedInstanceState: Bundle) {
+        savedInstanceState.clear()
+        savedInstanceState.putSerializable("eventCards", eventCards as Serializable)
+        super.onSaveInstanceState(savedInstanceState)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        citySettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
+
+        readCurrentCity()
+
+        if (savedInstanceState != null) {
+            eventCards = savedInstanceState.getSerializable("eventCards") as ArrayList<EventCard>
+            addEvents()
+        }
 
         if (tools.isConnected()) {
             initializeSwipeRefreshLayoutListener()
@@ -38,6 +59,38 @@ class MainActivity : AppCompatActivity() {
         } else {
             error_layout.visibility = View.VISIBLE
         }
+    }
+
+    private fun readCurrentCity(){
+        if(citySettings!!.contains(APP_PREFERENCES_CITY)) {
+            location = citySettings!!.getString(APP_PREFERENCES_CITY, "msk") as String
+        }
+
+        if(citySettings!!.contains(APP_PREFERENCES_CITY_NAME)){
+            text_view_city.text = citySettings!!.getString(APP_PREFERENCES_CITY_NAME, "Москва") as String
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        readCurrentCity()
+    }
+
+    private fun saveCurrentCity(){
+        val editor = citySettings!!.edit()
+        editor.putString(APP_PREFERENCES_CITY, location)
+        editor.putString(APP_PREFERENCES_CITY_NAME, text_view_city.text.toString())
+        editor.apply()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        saveCurrentCity()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        saveCurrentCity()
     }
 
     private fun addEvents() {
@@ -148,6 +201,7 @@ class MainActivity : AppCompatActivity() {
                 REQUEST_CODE_MESSAGE -> {
                     location = data!!.getStringExtra("location")
                     text_view_city.text = data!!.getStringExtra("cityName")
+                    saveCurrentCity()
                     eventCards = ArrayList()
                     progress_bar_layout.visibility = View.VISIBLE
                     page = 1

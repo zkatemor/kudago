@@ -2,7 +2,8 @@ package com.zkatemor.kudago.models
 
 import java.io.Serializable
 
-class EventCard : @Transient Serializable{
+class EventCard : @Transient Serializable {
+
     private var id: Int = 0
     private var title: String = ""
     private var description: String = ""

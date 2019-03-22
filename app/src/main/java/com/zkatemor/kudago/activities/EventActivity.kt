@@ -32,19 +32,38 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun setData() {
-        val data = intent.extras.getSerializable("event") as EventCard
+        val data = intent?.extras?.getSerializable("event") as EventCard
+
+        setTitleAndDescriptions(data)
+        setPlace(data)
+        setDate(data)
+        setCost(data)
+        setImages(data)
+        setCoordinates(data)
+    }
+
+    private fun setTitleAndDescriptions(data: EventCard){
         text_view_title.text = data.getTitle
 
         text_view_short_description.text = tools.getSpanned(data.getDescription)
         text_view_full_description.text = tools.getSpanned(data.getFullDescription)
 
+        text_view_short_description.movementMethod = LinkMovementMethod.getInstance()
+        text_view_short_description.text = text_view_short_description.text.trim()
+        text_view_full_description.movementMethod = LinkMovementMethod.getInstance()
+        text_view_full_description.text = text_view_full_description.text.trim()
+    }
+
+    private fun setPlace(data: EventCard){
         if (data.getLocation != "")
             text_view_location.text = data.getLocation
         else {
             location_layout.visibility = View.GONE
             map_frame.visibility = View.GONE
         }
+    }
 
+    private fun setDate(data: EventCard){
         if (data.getDate != "")
             text_view_date.text = data.getDate
         else
@@ -54,7 +73,16 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
             text_view_cost.text = data.getCost
         else
             cost_layout.visibility = View.GONE
+    }
 
+    private fun setCost(data: EventCard){
+        if (data.getCost != "")
+            text_view_cost.text = data.getCost
+        else
+            cost_layout.visibility = View.GONE
+    }
+
+    private fun setImages(data: EventCard){
         val images = data.getImages
 
         if (images.size > 0) {
@@ -63,18 +91,15 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
             viewPager.adapter = viewPagerAdapter
             tab_view_pager.setupWithViewPager(viewPager)
         }
+    }
 
+    private fun setCoordinates(data: EventCard){
         coordinates = data.getCoordinates
 
         if (coordinates.size != 0)
             createMapView()
         else
             map_frame.visibility = View.GONE
-
-        text_view_short_description.movementMethod = LinkMovementMethod.getInstance()
-        text_view_short_description.text = text_view_short_description.text.trim()
-        text_view_full_description.movementMethod = LinkMovementMethod.getInstance()
-        text_view_full_description.text = text_view_full_description.text.trim()
     }
 
     private fun createMapView() {
