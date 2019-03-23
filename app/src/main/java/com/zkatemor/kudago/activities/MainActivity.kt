@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     public override fun onSaveInstanceState(savedInstanceState: Bundle) {
         savedInstanceState.clear()
         savedInstanceState.putSerializable("eventCards", eventCards as Serializable)
+        savedInstanceState.putInt("page", page)
         super.onSaveInstanceState(savedInstanceState)
     }
 
@@ -48,25 +49,27 @@ class MainActivity : AppCompatActivity() {
 
         readCurrentCity()
 
+        initializeSwipeRefreshLayoutListener()
+
         if (savedInstanceState != null) {
             eventCards = savedInstanceState.getSerializable("eventCards") as ArrayList<EventCard>
-            addEvents()
-        }
-
-        if (tools.isConnected()) {
-            initializeSwipeRefreshLayoutListener()
-            addEvents()
+            page = savedInstanceState.getInt("page")
+            loadEvents()
         } else {
-            error_layout.visibility = View.VISIBLE
+            if (tools.isConnected()) {
+                addEvents()
+            } else {
+                error_layout.visibility = View.VISIBLE
+            }
         }
     }
 
-    private fun readCurrentCity(){
-        if(citySettings!!.contains(APP_PREFERENCES_CITY)) {
+    private fun readCurrentCity() {
+        if (citySettings!!.contains(APP_PREFERENCES_CITY)) {
             location = citySettings!!.getString(APP_PREFERENCES_CITY, "msk") as String
         }
 
-        if(citySettings!!.contains(APP_PREFERENCES_CITY_NAME)){
+        if (citySettings!!.contains(APP_PREFERENCES_CITY_NAME)) {
             text_view_city.text = citySettings!!.getString(APP_PREFERENCES_CITY_NAME, "Москва") as String
         }
     }
@@ -76,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         readCurrentCity()
     }
 
-    private fun saveCurrentCity(){
+    private fun saveCurrentCity() {
         val editor = citySettings!!.edit()
         editor.putString(APP_PREFERENCES_CITY, location)
         editor.putString(APP_PREFERENCES_CITY_NAME, text_view_city.text.toString())
@@ -91,6 +94,11 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         saveCurrentCity()
+    }
+
+    private fun loadEvents() {
+        isLoadData = false
+        setDataOnRecView()
     }
 
     private fun addEvents() {
