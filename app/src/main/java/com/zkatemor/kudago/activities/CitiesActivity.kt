@@ -44,6 +44,7 @@ class CitiesActivity : AppCompatActivity() {
             if (tools.isConnected()) {
                 addCities()
             } else {
+                progress_bar_layout.visibility = View.INVISIBLE
                 error_layout.visibility = View.VISIBLE
             }
         }

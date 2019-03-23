@@ -15,8 +15,8 @@ class ViewPagerAdapter(private val context: Context, private val images: ArrayLi
         return images.size
     }
 
-    override fun isViewFromObject(p0: View, p1: Any): Boolean {
-        return p0 == (p1 as View)
+    override fun isViewFromObject(view: View, obj: Any): Boolean {
+        return view == (obj as View)
     }
 
     override fun getItemPosition(`object`: Any): Int {

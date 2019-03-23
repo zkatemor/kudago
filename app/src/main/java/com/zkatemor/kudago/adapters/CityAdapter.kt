@@ -29,6 +29,8 @@ class CityAdapter(private val items: ArrayList<City>, private val location: Stri
         viewHolder.text_view_city.text = item.getCityName
         if (item.getSlug.equals(location))
             viewHolder.image_view_check.visibility = View.VISIBLE
+        else
+            viewHolder.image_view_check.visibility = View.INVISIBLE
     }
 
     inner class CityViewHolder(view: View) : RecyclerView.ViewHolder(view) {

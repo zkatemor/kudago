@@ -114,6 +114,8 @@
                 android:id="@+id/progress_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:indeterminateDrawable="@drawable/progress"
+                android:indeterminateOnly="true"
                 android:layout_gravity="center"
                 android:layout_centerInParent="true"/>
     </RelativeLayout>

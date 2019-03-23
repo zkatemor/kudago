@@ -59,6 +59,7 @@ class MainActivity : AppCompatActivity() {
             if (tools.isConnected()) {
                 addEvents()
             } else {
+                progress_bar_layout.visibility = View.INVISIBLE
                 error_layout.visibility = View.VISIBLE
             }
         }
