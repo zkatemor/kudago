@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.zkatemor.kudago.adapters.ViewPagerAdapter
 import com.zkatemor.kudago.models.EventCard
+import com.zkatemor.kudago.util.ScrollMap
 import kotlinx.android.synthetic.main.activity_event.*
 import com.zkatemor.kudago.util.Tools
 
@@ -104,8 +105,13 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun createMapView() {
         val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map_view) as SupportMapFragment
+            .findFragmentById(R.id.map_view) as ScrollMap
         mapFragment.getMapAsync(this)
+        mapFragment.setListener(object : ScrollMap.OnTouchListener {
+            override fun onTouch() {
+                scrollView.requestDisallowInterceptTouchEvent(true)
+            }
+        })
     }
 
     override fun onMapReady(map: GoogleMap) {

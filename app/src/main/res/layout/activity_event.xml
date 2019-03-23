@@ -174,7 +174,7 @@
 
                 <fragment
                         android:id="@+id/map_view"
-                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                        android:name="com.zkatemor.kudago.util.ScrollMap"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
 
