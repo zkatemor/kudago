@@ -1,26 +1,19 @@
 package com.zkatemor.kudago.util
 
 import com.zkatemor.kudago.networks.EventsResponse
+import com.zkatemor.kudago.networks.EventsService
 import com.zkatemor.kudago.networks.ResponseCallback
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class EventsRepository {
-
-    private object Holder {
-        val INSTANCE = EventsRepository()
-    }
-
-    companion object {
-        val instance: EventsRepository by lazy { Holder.INSTANCE }
-    }
-
+class EventsRepository @Inject constructor(private val eventsApi: EventsService) {
     fun getEvents(responseCallback: ResponseCallback<EventsResponse>,
                   location: String,
                   page: Int) {
         //retrofit async
-        NetworkService.instance.serviceEvent.getEvents(location, page)
+        eventsApi.getEvents(location, page)
             .enqueue(object : Callback<EventsResponse> {
 
                 override fun onFailure(call: Call<EventsResponse>, t: Throwable) {

@@ -16,7 +16,6 @@ import com.zkatemor.kudago.util.Tools
 class EventAdapter(private val items: ArrayList<EventCard>, context: Context)
     : RecyclerView.Adapter<EventAdapter.EventViewHolder>() {
 
-    var tools = Tools(context)
     var onItemClick: ((EventCard) -> Unit)? = null
 
     override fun getItemCount(): Int {
@@ -55,7 +54,7 @@ class EventAdapter(private val items: ArrayList<EventCard>, context: Context)
         else
             viewHolder.cost_layout.visibility = View.GONE
 
-        viewHolder.description.text = tools.removeTags(item.getDescription)
+        viewHolder.description.text = Tools.removeTags(item.getDescription)
 
         Glide.with(viewHolder.main_layout).load(item.getImageURL).into(viewHolder.image)
     }

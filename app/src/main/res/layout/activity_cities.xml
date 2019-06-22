@@ -6,36 +6,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <ScrollView
-            android:id="@+id/scroll_city"
+    <LinearLayout
+            android:id="@+id/city_linear_layout"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <LinearLayout
-                android:id="@+id/city_linear_layout"
-                android:orientation="vertical"
+        <include
+                android:id="@+id/toolbar_cities"
+                layout="@layout/toolbar_cities"/>
+
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/rec_view_cities"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            <include
-                    android:id="@+id/toolbar_cities"
-                    layout="@layout/toolbar_cities"/>
+        </android.support.v7.widget.RecyclerView>
 
-            <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rec_view_cities"
-                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-            </android.support.v7.widget.RecyclerView>
-
-        </LinearLayout>
-
-    </ScrollView>
+    </LinearLayout>
 
     <RelativeLayout
-            android:id="@+id/error_layout"
+            android:id="@+id/error_layout_city"
             android:background="@color/colorWhite"
             android:visibility="gone"
             android:layout_width="match_parent"
@@ -59,25 +52,6 @@
                 android:text="@string/text_error"
                 android:textColor="@color/colorBlack"
                 android:textSize="16sp"/>
-
-        <FrameLayout
-                android:id="@+id/frame_error_layout"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:background="@color/colorRed"
-                android:layout_alignParentBottom="true">
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:textSize="16sp"
-                    android:text="@string/text_error_bottom"
-                    android:textColor="@color/colorWhite"
-                    android:layout_gravity="center"/>
-
-        </FrameLayout>
 
     </RelativeLayout>
 

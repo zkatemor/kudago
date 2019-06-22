@@ -1,24 +1,18 @@
 package com.zkatemor.kudago.util
 
 import com.zkatemor.kudago.networks.CitiesResponse
+import com.zkatemor.kudago.networks.CitiesService
 import com.zkatemor.kudago.networks.ResponseCallback
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class CitiesRepository {
-
-    private object Holder {
-        val INSTANCE = CitiesRepository()
-    }
-
-    companion object {
-        val instance: CitiesRepository by lazy { Holder.INSTANCE }
-    }
+class CitiesRepository @Inject constructor(private val citiesApi: CitiesService){
 
     fun getCities(responseCallback: ResponseCallback<ArrayList<CitiesResponse>>) {
         //retrofit async
-        NetworkService.instance.serviceCity.getCities()
+        citiesApi.getCities()
             .enqueue(object : Callback<ArrayList<CitiesResponse>> {
 
             override fun onFailure(call: Call<ArrayList<CitiesResponse>>, t: Throwable) {

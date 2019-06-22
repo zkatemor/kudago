@@ -23,7 +23,6 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var googleMap: GoogleMap
     private var coordinates: ArrayList<Double> = ArrayList()
-    private val tools: Tools by lazy(LazyThreadSafetyMode.NONE) { Tools(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,8 +45,8 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun setTitleAndDescriptions(data: EventCard){
         text_view_title.text = data.getTitle
 
-        text_view_short_description.text = tools.getSpanned(data.getDescription)
-        text_view_full_description.text = tools.getSpanned(data.getFullDescription)
+        text_view_short_description.text = Tools.getSpanned(data.getDescription)
+        text_view_full_description.text = Tools.getSpanned(data.getFullDescription)
 
         text_view_short_description.movementMethod = LinkMovementMethod.getInstance()
         text_view_short_description.text = text_view_short_description.text.trim()
@@ -120,7 +119,7 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
         val position = LatLng(coordinates[0], coordinates[1])
 
         googleMap.addMarker(MarkerOptions().position(position)
-            .icon(tools.bitmapDescriptorFromVector(this, R.drawable.ic_map)))
+            .icon(Tools.bitmapDescriptorFromVector(this, R.drawable.ic_map)))
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 15.0F))
     }
 

@@ -1,27 +1,65 @@
 package com.zkatemor.kudago.activities
 
 import android.app.Activity
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.zkatemor.kudago.R
 import com.zkatemor.kudago.adapters.CityAdapter
+import com.zkatemor.kudago.app.App
 import com.zkatemor.kudago.models.City
 import com.zkatemor.kudago.networks.CitiesResponse
 import com.zkatemor.kudago.networks.ResponseCallback
 import com.zkatemor.kudago.util.CitiesRepository
+import com.zkatemor.kudago.util.ShowError
 import com.zkatemor.kudago.util.Tools
 import kotlinx.android.synthetic.main.activity_cities.*
+import kotlinx.android.synthetic.main.activity_cities.error_layout_city
+import kotlinx.android.synthetic.main.activity_cities.progress_bar_layout
+import kotlinx.coroutines.*
 import java.io.Serializable
+import javax.inject.Inject
+import javax.inject.Named
 
 class CitiesActivity : AppCompatActivity() {
+    @Inject
+    @Named("Cities_Repository")
+    lateinit var repository: CitiesRepository
 
-    private val tools: Tools by lazy(LazyThreadSafetyMode.NONE) { Tools(this) }
+    private val BROADCAST_ACTION = "android.net.conn.CONNECTIVITY_CHANGE"
+    private val INTENT_FILTER = IntentFilter(BROADCAST_ACTION)
     private var cities: ArrayList<City> = ArrayList()
     private var slug: String = ""
     private var isLoadData: Boolean = true
+    private var isInternetAccess: Boolean = false
+
+    private val broadcast_receiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            when (intent?.action) {
+                BROADCAST_ACTION -> {
+                    isInternetAccess = false
+
+                    val checkInternet = CoroutineScope(Dispatchers.IO).async {
+                        Tools.isInternetAccess(this@CitiesActivity)
+                    }
+
+                    GlobalScope.launch(Dispatchers.Main) {
+                        isInternetAccess = checkInternet.await()
+                        if (isInternetAccess) {
+                            showCities()
+                        } else {
+                            showLackInternet()
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     public override fun onSaveInstanceState(savedInstanceState: Bundle) {
         savedInstanceState.clear()
@@ -33,6 +71,7 @@ class CitiesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cities)
+        App.component!!.injectsCitiesActivity(this)
 
         setSlug()
 
@@ -41,13 +80,38 @@ class CitiesActivity : AppCompatActivity() {
             slug = savedInstanceState.getString("slug") as String
             setDataOnRecView()
         } else {
-            if (tools.isConnected()) {
+            if (Tools.isInternetAccess(this)) {
                 addCities()
             } else {
-                progress_bar_layout.visibility = View.INVISIBLE
-                error_layout.visibility = View.VISIBLE
+                showLackInternet()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        registerReceiver(broadcast_receiver, INTENT_FILTER)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unregisterReceiver(broadcast_receiver)
+    }
+
+    fun showCities(){
+        if (cities.size == 0) {
+            cities = ArrayList()
+            addCities()
+        } else {
+            city_main_layout.visibility = View.VISIBLE
+            error_layout_city.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun showLackInternet() {
+        error_layout_city.visibility = View.VISIBLE
+        val error_snackbar = ShowError(error_layout_city)
+        error_snackbar.show(this)
     }
 
     private fun setSlug(){
@@ -58,7 +122,7 @@ class CitiesActivity : AppCompatActivity() {
     private fun addCities() {
         cities = ArrayList()
         isLoadData = true
-        CitiesRepository.instance.getCities(object : ResponseCallback<ArrayList<CitiesResponse>> {
+        repository.getCities(object : ResponseCallback<ArrayList<CitiesResponse>> {
 
             override fun onSuccess(apiResponse: ArrayList<CitiesResponse>) {
                 var tmpCities: ArrayList<City> = ArrayList()
@@ -67,12 +131,12 @@ class CitiesActivity : AppCompatActivity() {
                     tmpCities.add(City(it.name, it.slug))
                 }
 
-                cities.addAll(tools.sortCities(tmpCities))
+                cities.addAll(Tools.sortCities(tmpCities))
                 setDataOnRecView()
             }
 
             override fun onFailure(errorMessage: String) {
-                error_layout.visibility = View.VISIBLE
+                showLackInternet()
             }
         })
     }

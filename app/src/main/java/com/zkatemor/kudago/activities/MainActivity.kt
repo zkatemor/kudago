@@ -1,49 +1,89 @@
 package com.zkatemor.kudago.activities
 
 import android.app.Activity
-import android.content.Context
-import android.content.Intent
+import android.content.*
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.zkatemor.kudago.R
 import com.zkatemor.kudago.adapters.EventAdapter
 import com.zkatemor.kudago.models.EventCard
 import com.zkatemor.kudago.networks.*
 import com.zkatemor.kudago.util.EventsRepository
 import com.zkatemor.kudago.util.Tools
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.toolbar_main.*
 import java.io.Serializable
 import kotlin.collections.ArrayList
-import android.content.SharedPreferences
+import com.zkatemor.kudago.R
+import com.zkatemor.kudago.util.ShowError
+import android.content.Intent
+import com.zkatemor.kudago.app.App
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.toolbar_main.*
+import kotlinx.coroutines.*
+import javax.inject.Inject
+import javax.inject.Named
 
 class MainActivity : AppCompatActivity() {
 
-    private val tools: Tools by lazy(LazyThreadSafetyMode.NONE) { Tools(this) }
+    @Inject
+    @Named("Events_Repository")
+    lateinit var repository: EventsRepository
+
     var citySettings: SharedPreferences? = null
     val APP_PREFERENCES = "city_settings"
     val APP_PREFERENCES_CITY = "city"
     val APP_PREFERENCES_CITY_NAME = "cityName"
+
+    val PAGE_KEY = "page"
+    val EVENTSCARD_KEY = "eventsCard"
+    val CITYNAME_KEY = "cityName"
+    val LOCATION_KEY = "location"
+
+    private val BROADCAST_ACTION = "android.net.conn.CONNECTIVITY_CHANGE"
+    private val INTENT_FILTER = IntentFilter(BROADCAST_ACTION)
     private val DIRECTION_UP: Int = -1
     private val REQUEST_CODE_MESSAGE = 1
     private var eventCards: ArrayList<EventCard> = ArrayList()
     private var location: String = "msk"
     private var page: Int = 1
     private var isLoadData: Boolean = true
+    private var isInternetAccess: Boolean = false
+
+    private val broadcast_receiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            when (intent?.action) {
+                BROADCAST_ACTION -> {
+                    isInternetAccess = false
+
+                    val checkInternet = CoroutineScope(Dispatchers.IO).async {
+                        Tools.isInternetAccess(this@MainActivity)
+                    }
+
+                    GlobalScope.launch(Dispatchers.Main) {
+                        isInternetAccess = checkInternet.await()
+                        if (isInternetAccess) {
+                            showEvents()
+                        } else {
+                            showLackInternet()
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     public override fun onSaveInstanceState(savedInstanceState: Bundle) {
         savedInstanceState.clear()
-        savedInstanceState.putSerializable("eventCards", eventCards as Serializable)
-        savedInstanceState.putInt("page", page)
+        savedInstanceState.putSerializable(EVENTSCARD_KEY, eventCards as Serializable)
+        savedInstanceState.putInt(PAGE_KEY, page)
         super.onSaveInstanceState(savedInstanceState)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        App.component!!.injectsMainActivity(this)
 
         citySettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
 
@@ -52,18 +92,38 @@ class MainActivity : AppCompatActivity() {
         initializeSwipeRefreshLayoutListener()
 
         if (savedInstanceState != null) {
-            eventCards = savedInstanceState.getSerializable("eventCards") as ArrayList<EventCard>
-            page = savedInstanceState.getInt("page")
+            eventCards = savedInstanceState.getSerializable(EVENTSCARD_KEY) as ArrayList<EventCard>
+            page = savedInstanceState.getInt(PAGE_KEY)
             loadEvents()
         } else {
-            if (tools.isConnected()) {
-                addEvents()
-            } else {
-                progress_bar_layout.visibility = View.INVISIBLE
-                error_layout.visibility = View.VISIBLE
-            }
+            showEvents()
         }
     }
+
+    private fun showLackInternet() {
+        invisibleProgress()
+        error_layout.visibility = View.VISIBLE
+        val error_snackbar = ShowError(error_layout)
+        error_snackbar.show(this)
+    }
+
+    private fun showEvents() {
+        if (eventCards.size == 0) {
+            eventCards = ArrayList()
+            page = 1
+            initializeData()
+        } else {
+            visibleEventsLayout()
+        }
+    }
+
+    private fun initializeData() {
+        invisibleErrorLayout()
+        visibleProgress()
+        isLoadData = true
+        addEvents()
+    }
+
 
     private fun readCurrentCity() {
         if (citySettings!!.contains(APP_PREFERENCES_CITY)) {
@@ -77,6 +137,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        registerReceiver(broadcast_receiver, INTENT_FILTER)
         readCurrentCity()
     }
 
@@ -89,6 +150,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
+        unregisterReceiver(broadcast_receiver)
         saveCurrentCity()
     }
 
@@ -103,8 +165,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addEvents() {
-        isLoadData = true
-        EventsRepository.instance.getEvents(object : ResponseCallback<EventsResponse> {
+        repository.getEvents(object : ResponseCallback<EventsResponse> {
             override fun onSuccess(apiResponse: EventsResponse) {
                 apiResponse.events.forEach {
                     val currentImages = ArrayList<String>()
@@ -118,11 +179,11 @@ class MainActivity : AppCompatActivity() {
                             it.title,
                             it.description,
                             it.fullDescription,
-                            tools.convertPlace(it.place),
-                            tools.convertDate(it.dates[0].start_date, it.dates[0].end_date),
+                            Tools.convertPlace(it.place),
+                            Tools.convertDate(it.dates[0].start_date, it.dates[0].end_date),
                             it.price,
                             currentImages,
-                            tools.getCoordinates(it.place)
+                            Tools.getCoordinates(it.place)
                         )
                     )
                 }
@@ -136,12 +197,30 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(errorMessage: String) {
-                error_layout.visibility = View.VISIBLE
+                showLackInternet()
                 isLoadData = false
             }
         }
             , location
             , page)
+    }
+
+    private fun invisibleProgress() {
+        swipe_refresh_layout.isRefreshing = false
+        progress_bar_layout.visibility = View.INVISIBLE
+    }
+
+    private fun visibleProgress() {
+        progress_bar_layout.visibility = View.VISIBLE
+    }
+
+    private fun visibleEventsLayout() {
+        main_frame_layout.visibility = View.VISIBLE
+        error_layout.visibility = View.INVISIBLE
+    }
+
+    private fun invisibleErrorLayout() {
+        error_layout.visibility = View.INVISIBLE
     }
 
     private fun setDataOnRecView() {
@@ -158,8 +237,7 @@ class MainActivity : AppCompatActivity() {
 
         initializeScrollListenerOnRecView(manager)
 
-        swipe_refresh_layout.isRefreshing = false
-        progress_bar_layout.visibility = View.INVISIBLE
+        invisibleProgress()
     }
 
     private fun initializeScrollListenerOnRecView(manager: LinearLayoutManager) {
@@ -172,9 +250,10 @@ class MainActivity : AppCompatActivity() {
                 val countGeneral = manager.itemCount
                 val firstPosition = manager.findFirstVisibleItemPosition()
 
-                if (!isLoadData) {
+                if (!isLoadData && isInternetAccess) {
                     if ((countVisible + firstPosition) >= countGeneral) {
                         page++
+                        isLoadData = true
                         addEvents()
                     }
                 }
@@ -184,21 +263,23 @@ class MainActivity : AppCompatActivity() {
 
     private fun initializeSwipeRefreshLayoutListener() {
         swipe_refresh_layout.setColorSchemeResources(R.color.colorRed)
-        progress_bar_layout.visibility = View.VISIBLE
+        visibleProgress()
 
         swipe_refresh_layout.setOnRefreshListener {
-            if (tools.isConnected()) {
+            if (isInternetAccess) {
                 eventCards = ArrayList()
                 page = 1
-                addEvents()
+                invisibleErrorLayout()
+                visibleEventsLayout()
+                initializeData()
             } else
-                error_layout.visibility = View.VISIBLE
+                showLackInternet()
         }
     }
 
     fun onClickCityButton(v: View) {
         val intent = Intent(this, CitiesActivity::class.java)
-        intent.putExtra("location", location)
+        intent.putExtra(LOCATION_KEY, location)
         startActivityForResult(intent, REQUEST_CODE_MESSAGE)
     }
 
@@ -208,13 +289,13 @@ class MainActivity : AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 REQUEST_CODE_MESSAGE -> {
-                    location = data!!.getStringExtra("location")
-                    text_view_city.text = data!!.getStringExtra("cityName")
+                    location = data!!.getStringExtra(LOCATION_KEY)
+                    text_view_city.text = data!!.getStringExtra(CITYNAME_KEY)
                     saveCurrentCity()
                     eventCards = ArrayList()
                     progress_bar_layout.visibility = View.VISIBLE
                     page = 1
-                    addEvents()
+                    initializeData()
                 }
             }
         }
