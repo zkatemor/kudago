@@ -18,6 +18,8 @@ import com.zkatemor.kudago.R
 import com.zkatemor.kudago.util.ShowError
 import android.content.Intent
 import com.zkatemor.kudago.app.App
+import com.zkatemor.kudago.db.EventCardDao
+import com.zkatemor.kudago.util.ShowMessageDB
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar_main.*
 import kotlinx.coroutines.*
@@ -25,10 +27,12 @@ import javax.inject.Inject
 import javax.inject.Named
 
 class MainActivity : AppCompatActivity() {
-
     @Inject
     @Named("Events_Repository")
     lateinit var repository: EventsRepository
+
+    @Inject
+    lateinit var eventsDao: EventCardDao
 
     var citySettings: SharedPreferences? = null
     val APP_PREFERENCES = "city_settings"
@@ -65,7 +69,13 @@ class MainActivity : AppCompatActivity() {
                         if (isInternetAccess) {
                             showEvents()
                         } else {
-                            showLackInternet()
+                            val saved_events = eventsDao.getAll()
+                            if (saved_events.isNotEmpty()) {
+                                loadEventIntoDatabase()
+                                showDBMessage()
+                                showEvents()
+                            } else
+                                showLackInternet()
                         }
                     }
                 }
@@ -83,7 +93,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        App.component!!.injectsMainActivity(this)
+        App.component!!.injectsMainActivity(this@MainActivity)
 
         citySettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
 
@@ -107,6 +117,12 @@ class MainActivity : AppCompatActivity() {
         error_snackbar.show(this)
     }
 
+    private fun showDBMessage() {
+        invisibleProgress()
+        val snackbar = ShowMessageDB(error_layout)
+        snackbar.show(this)
+    }
+
     private fun showEvents() {
         if (eventCards.size == 0) {
             eventCards = ArrayList()
@@ -121,7 +137,13 @@ class MainActivity : AppCompatActivity() {
         invisibleErrorLayout()
         visibleProgress()
         isLoadData = true
-        addEvents()
+        val saved_events = eventsDao.getAll()
+        if (!isInternetAccess && saved_events.isNotEmpty()) {
+            loadEventIntoDatabase()
+            showDBMessage()
+            showEvents()
+        } else
+            addEvents()
     }
 
 
@@ -173,19 +195,31 @@ class MainActivity : AppCompatActivity() {
                         currentImages.add(it.image)
                     }
 
-                    eventCards.add(
-                        EventCard(
-                            it.id,
-                            it.title,
-                            it.description,
-                            it.fullDescription,
-                            Tools.convertPlace(it.place),
-                            Tools.convertDate(it.dates[0].start_date, it.dates[0].end_date),
-                            it.price,
-                            currentImages,
-                            Tools.getCoordinates(it.place)
-                        )
+                    val event = EventCard(
+                        it.id,
+                        it.title,
+                        it.description,
+                        it.fullDescription,
+                        Tools.convertPlace(it.place),
+                        Tools.convertDate(it.dates[0].start_date, it.dates[0].end_date),
+                        it.price,
+                        currentImages,
+                        Tools.getCoordinates(it.place)
                     )
+
+                    val eventToSave = EventCard(
+                        it.title,
+                        it.description,
+                        it.fullDescription,
+                        Tools.convertPlace(it.place),
+                        Tools.convertDate(it.dates[0].start_date, it.dates[0].end_date),
+                        it.price,
+                        currentImages
+                    )
+
+                    eventCards.add(event)
+
+                    addEventToDatabase(eventToSave)
                 }
 
                 isLoadData = false
@@ -299,5 +333,16 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun addEventToDatabase(event: EventCard) {
+        eventsDao.insert(event)
+    }
+
+    private fun loadEventIntoDatabase() {
+        eventCards.clear()
+        eventCards.addAll(eventsDao.getAll())
+        isLoadData = false
+        setDataOnRecView()
     }
 }

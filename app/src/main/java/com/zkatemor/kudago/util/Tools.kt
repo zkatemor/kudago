@@ -73,8 +73,8 @@ class Tools {
         fun isInternetAccess(context: Context): Boolean {
             if (isConnected(context)) {
                 try {
-                    val ping = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.com")
-                    val value = ping.waitFor()
+                    val process = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.com")
+                    val value = process.waitFor()
                     return value == 0
                 } catch (e: Exception) {
                     e.printStackTrace()

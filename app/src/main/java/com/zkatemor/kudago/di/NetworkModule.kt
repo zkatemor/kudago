@@ -1,6 +1,9 @@
 package com.zkatemor.kudago.di
 
+import android.arch.persistence.room.Room
+import android.content.Context
 import com.zkatemor.kudago.BuildConfig
+import com.zkatemor.kudago.db.AppDatabase
 import com.zkatemor.kudago.networks.BASE_URL
 import com.zkatemor.kudago.networks.CitiesService
 import com.zkatemor.kudago.networks.EventsService
@@ -16,7 +19,22 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
-class NetworkModule {
+class NetworkModule(private val app_context: Context) {
+
+    @Singleton
+    @Provides
+    fun providesAppContext() = app_context
+
+    @Singleton
+    @Provides
+    fun providesAppDatabase(context: Context): AppDatabase =
+        Room.databaseBuilder(context, AppDatabase::class.java, "my-todo-db").
+            fallbackToDestructiveMigration().allowMainThreadQueries().build()
+
+    @Singleton
+    @Provides
+    fun providesEventsDao(database: AppDatabase) = database.eventCardDao()
+
     @Singleton
     @Provides
     fun buildHttpClient(): OkHttpClient {

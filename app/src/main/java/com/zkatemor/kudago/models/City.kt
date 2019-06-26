@@ -2,7 +2,7 @@ package com.zkatemor.kudago.models
 
 import java.io.Serializable
 
-class City: @kotlin.jvm.Transient Serializable {
+class City: @Transient Serializable {
 
     private var cityName: String = ""
     private var slug: String = ""

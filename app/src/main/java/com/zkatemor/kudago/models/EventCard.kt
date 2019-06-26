@@ -1,17 +1,22 @@
 package com.zkatemor.kudago.models
 
+import android.arch.persistence.room.*
+import com.zkatemor.kudago.util.StringListConverter
 import java.io.Serializable
 
+@Entity
 class EventCard : @Transient Serializable {
-
-    private var id: Int = 0
-    private var title: String = ""
-    private var description: String = ""
-    private var fullDescription: String = ""
-    private var location: String = ""
-    private var date: String = ""
-    private var cost: String = ""
-    private var imagesURL: ArrayList<String> = ArrayList()
+    @PrimaryKey (autoGenerate = true)
+    var id: Int = 0
+    var title: String = ""
+    var description: String = ""
+    var fullDescription: String = ""
+    var location: String = ""
+    var date: String = ""
+    var cost: String = ""
+    @TypeConverters(StringListConverter::class)
+    var imagesURL: ArrayList<String> = ArrayList()
+    @Ignore
     private var coordinates: ArrayList<Double> = ArrayList()
 
     constructor(
@@ -34,6 +39,24 @@ class EventCard : @Transient Serializable {
         this.cost = cost
         this.imagesURL = imagesURL
         this.coordinates = coordinates
+    }
+
+    constructor(
+        title: String,
+        description: String,
+        fullDescription: String,
+        location: String,
+        date: String,
+        cost: String,
+        imagesURL: ArrayList<String>
+    ) {
+        this.title = title
+        this.description = description
+        this.fullDescription = fullDescription
+        this.location = location
+        this.date = date
+        this.cost = cost
+        this.imagesURL = imagesURL
     }
 
     val getId: Int
@@ -64,5 +87,5 @@ class EventCard : @Transient Serializable {
         get() = imagesURL
 
     val getCoordinates: ArrayList<Double>
-       get() = coordinates
+        get() = coordinates
 }
